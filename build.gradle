@@ -1,0 +1,93 @@
+project.version = "1.0"
+
+// Repositories
+buildscript {
+    repositories { mavenCentral() }
+    dependencies {
+        classpath (
+                'com.mapvine:gradle-cobertura-plugin:1.0',
+                'nl.javadude.gradle.plugins:license-gradle-plugin:0.6.0',
+                'com.github.ben-manes:gradle-versions-plugin:0.3',
+                )
+    }
+}
+repositories { 
+    mavenCentral()
+}
+
+apply plugin: 'java'
+// extra plugins
+apply plugin: 'eclipse'
+apply plugin: 'versions'
+// Reports plugins
+apply plugin: 'build-dashboard'
+apply plugin: 'findbugs'
+apply plugin: 'checkstyle'
+apply plugin: 'cobertura'
+apply plugin: 'license'
+
+dependencies {
+    compile (
+        // guice
+        'com.google.inject:guice:3.0',
+        
+        // Logging Facade
+        'org.slf4j:slf4j-api:1.7.5',
+        
+    )
+
+    runtime (
+        // Logback runtime
+        'ch.qos.logback:logback-classic:1.0.11',
+        'org.slf4j:log4j-over-slf4j:1.7.5',
+        'net.logstash.logback:logstash-logback-encoder:1.1',
+        'org.codehaus.janino:janino:2.6.1',
+    )
+
+    testCompile (
+        'junit:junit:4.11',
+        //'org.easymock:easymock:3.1',
+        //'org.powermock:powermock-module-junit4:1.5',
+        //'org.powermock:powermock-api-easymock:1.5',
+    )
+}
+
+test { 
+    // Avoid VerifyError regards cobertura instrumentation
+    jvmArgs "-XX:-UseSplitVerifier"
+}
+
+javadoc {
+    options {
+        doclet = "com.visural.doclets.markdown.standard.Standard"
+        docletpath = [
+            rootProject.file('./extras/MarkdownDoclet-3.0.jar')
+        ]
+        // http://sensemaya.org/maya/2009/07/10/making-javadoc-more-legible
+        stylesheetFile = rootProject.file('./extras/javadoc-stylesheet.css')
+    }
+}
+
+[findbugsMain, findbugsTest]*.reports {
+    xml.enabled false
+    html.enabled true
+}
+findbugs { ignoreFailures = true }
+
+checkstyle {
+    configFile = rootProject.file("extras/checkstyle.xml")
+}
+
+cobertura {
+    format = 'html'
+    includes = ['**/*.java']
+}
+
+license {
+    // https://github.com/hierynomus/license-gradle-plugin
+    header rootProject.file('./extras/HEADER.license')
+    strictCheck true
+
+    ext.year = 2013
+    ext.email = 'dpenna.queiroz@gmail.com'
+}
