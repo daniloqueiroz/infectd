@@ -11,12 +11,13 @@ package bz.infectd.membership;
  * 
  * @author Danilo Queiroz <dpenna.queiroz@gmail.com>
  */
-public class ExternalHeartbeat extends Heartbeat {
+public class ExtendedHeartbeat extends Heartbeat {
 
     int missingRounds;
     boolean changed;
 
-    public ExternalHeartbeat(int clock) {
+    public ExtendedHeartbeat(String host, int port, int clock) {
+        super(host, port);
         super.clock(clock);
         this.changed = true;
     }

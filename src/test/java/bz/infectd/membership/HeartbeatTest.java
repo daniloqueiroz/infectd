@@ -5,15 +5,13 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 
-import bz.infectd.membership.Heartbeat;
-
 public class HeartbeatTest {
 
     private Heartbeat hb;
 
     @Before
     public void setUp() {
-        this.hb = new Heartbeat();
+        this.hb = new Heartbeat("some", 0);
     }
 
     @Test

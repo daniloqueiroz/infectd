@@ -7,15 +7,13 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 
-import bz.infectd.membership.ExternalHeartbeat;
+public class ExtendedHeartbeatTest {
 
-public class ExternalHeartbeatTest {
-
-    private ExternalHeartbeat hb;
+    private ExtendedHeartbeat hb;
 
     @Before
     public void setUp() {
-        this.hb = new ExternalHeartbeat(2);
+        this.hb = new ExtendedHeartbeat(null, 0, 2);
     }
 
     @Test

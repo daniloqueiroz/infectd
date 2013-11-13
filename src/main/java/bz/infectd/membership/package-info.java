@@ -10,11 +10,7 @@
  * The **HeartbeatMonitor** is responsible by update it own *Heartbeat*
  * periodically and fire the propagation of the members list.
  * 
- * The **Membership** is responsible by keep track of external nodes heartbeat.
- * The **MembershipPublisher** is responsible by publish the membership list
- * every time the *HeartbeatMonitor* updates its *Heartbeat*, and the
- * **MembershipSubscriber** is responsible by update the *Heartbeat* of
- * external nodes.
+ * The **MembershipBoard** is responsible by keep track of external nodes heartbeat.
  *  
  * @author Danilo Queiroz <dpenna.queiroz@gmail.com>
  */

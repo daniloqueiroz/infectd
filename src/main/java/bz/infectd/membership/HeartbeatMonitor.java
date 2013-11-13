@@ -20,4 +20,11 @@ public class HeartbeatMonitor {
     public void pulse() {
         this.heartbeat.clock(this.heartbeat.clock() + 1);
     }
+
+    /**
+     * Gets the monitored heartbeat.
+     */
+    public Heartbeat heartbeat() {
+        return this.heartbeat;
+    }
 }

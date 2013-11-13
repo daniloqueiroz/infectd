@@ -11,6 +11,13 @@ import static java.lang.Math.max;
 public class Heartbeat {
 
     private int clock = 1;
+    private String address;
+    private int port;
+
+    public Heartbeat(String address, int port) {
+        this.address = address;
+        this.port = port;
+    }
 
     /**
      * It adjust the clock for the given clock only, and if only, the given
@@ -32,4 +39,11 @@ public class Heartbeat {
         return this.clock;
     }
 
+    public String address() {
+        return this.address;
+    }
+
+    public int port() {
+        return this.port;
+    }
 }
