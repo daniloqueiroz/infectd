@@ -1,5 +1,6 @@
 # InfectD
 
+[![Build Status](https://travis-ci.org/DaniloQueiroz/infectd.png)](https://travis-ci.org/DaniloQueiroz/infectd)
 **Under active developement - not usable ATM**
 
 InfectD is a p2p system that aims provides membership, key-value storage for small data and events.
@@ -10,12 +11,12 @@ InfectD is completely distributed - means that there's no *master* node on the n
 
 Due the decentralized architecture of InfectD, the data is eventually consistency, and nodes can falsely detect failures/partitions on the network.Anyway, the gossip protocol parameter can be tuned according to each environment particularities.
 
-# Features
-# Protocol
-# Usage
-## Server
-## CLI
-## Event Handlers
-# Building
-# How to contribute
-# License
+## Features
+## Protocol
+## Usage
+### Server
+### CLI
+### Event Handlers
+## Building
+## How to contribute
+## License
