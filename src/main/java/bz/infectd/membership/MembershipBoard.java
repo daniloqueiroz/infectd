@@ -1,9 +1,13 @@
 package bz.infectd.membership;
 
+import static org.slf4j.LoggerFactory.getLogger;
+
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
+
+import org.slf4j.Logger;
 
 /**
  * Keep track of all the current members by managing they heartbeats.
@@ -14,6 +18,7 @@ import java.util.Map;
  */
 public class MembershipBoard {
 
+    private static final Logger logger = getLogger(MembershipBoard.class);
     // TODO move to config
     public static final int MISSING_ROUNDS_TO_DEATH = 3;
 
@@ -30,6 +35,7 @@ public class MembershipBoard {
      * Updates the given heartbeats.
      */
     public void updateHeartbeats(Collection<Heartbeat> heartbeats) {
+        logger.info("Updating %s heartbeats", heartbeats.size());
         for (Heartbeat heartbeat : heartbeats) {
             String address = heartbeat.address();
             int port = heartbeat.port();
@@ -54,6 +60,7 @@ public class MembershipBoard {
             ExtendedHeartbeat hb = new ExtendedHeartbeat(address, port, clock);
             this.heartbeats.put(key, hb);
             // TODO notify new member joined
+            logger.debug("Node %s has joined - adding heartbeat", key);
         }
     }
 
@@ -93,6 +100,7 @@ public class MembershipBoard {
         for (String nodeKey : toRemove) {
             this.heartbeats.remove(nodeKey);
             // TODO notify member left
+            logger.debug("Node %s dead - removing heartbeat", nodeKey);
         }
     }
 

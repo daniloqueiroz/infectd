@@ -1,9 +1,13 @@
 package bz.infectd.journaling;
 
+import static org.slf4j.LoggerFactory.getLogger;
+
 import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+
+import org.slf4j.Logger;
 
 /**
  * Keep tracks of all the events received that are pending to process.
@@ -16,6 +20,7 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 public class Journal {
 
+    private static final Logger logger = getLogger(Journal.class);
     private LinkedHashSet<Entry<?>> entries = new LinkedHashSet<>();
     private Lock monitor = new ReentrantLock();
     private EntriesProcessor fanout;
@@ -29,6 +34,7 @@ public class Journal {
      */
     public void add(Entry<?> entry) {
         this.monitor.lock();
+        logger.debug("Adding new entry %s", entry);
         this.entries.add(entry);
         this.monitor.unlock();
     }
@@ -42,6 +48,7 @@ public class Journal {
      * @return
      */
     public Collection<Entry<?>> sync() {
+        logger.debug("Performing journaling sync");
         Collection<Entry<?>> toSync = this.rotateEntries();
         this.fanout.process(toSync);
         return toSync;

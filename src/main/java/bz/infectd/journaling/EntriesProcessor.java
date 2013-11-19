@@ -1,7 +1,11 @@
 package bz.infectd.journaling;
 
+import static org.slf4j.LoggerFactory.getLogger;
+
 import java.util.Collection;
 import java.util.LinkedList;
+
+import org.slf4j.Logger;
 
 import bz.infectd.membership.Heartbeat;
 import bz.infectd.membership.MembershipBoard;
@@ -13,6 +17,7 @@ import bz.infectd.membership.MembershipBoard;
  */
 public class EntriesProcessor {
 
+    private static final Logger logger = getLogger(EntriesProcessor.class);
     private MembershipBoard membersBoard;
 
     public EntriesProcessor(MembershipBoard board) {
@@ -20,6 +25,7 @@ public class EntriesProcessor {
     }
 
     public void process(Collection<Entry<?>> entries) {
+        logger.info("Processing %s entries", entries.size());
         ContentsManager contents = new ContentsManager();
         for (Entry<?> entry : entries) {
             contents.add(entry);

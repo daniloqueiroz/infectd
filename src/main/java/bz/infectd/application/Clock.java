@@ -1,6 +1,10 @@
 package bz.infectd.application;
 
 import static bz.infectd.journaling.Entry.Builder.createEntry;
+import static org.slf4j.LoggerFactory.getLogger;
+
+import org.slf4j.Logger;
+
 import bz.infectd.journaling.Journal;
 import bz.infectd.membership.Heartbeat;
 import bz.infectd.membership.HeartbeatMonitor;
@@ -10,6 +14,7 @@ import bz.infectd.membership.HeartbeatMonitor;
  */
 public class Clock {
 
+    private static final Logger logger = getLogger(Clock.class);
     private Journal journal;
     private HeartbeatMonitor monitor;
 
@@ -19,6 +24,7 @@ public class Clock {
     }
 
     public void tick() {
+        logger.info("Ticking the clock");
         this.monitor.pulse();
         Heartbeat hb = this.monitor.heartbeat();
         this.journal.add(createEntry(hb));
