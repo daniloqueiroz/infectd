@@ -1,0 +1,24 @@
+package gossip;
+
+option java_package = "bz.infectd.communication.protocol.gossip";
+option java_outer_classname = "P2PProtocol";
+option optimize_for = SPEED;
+
+message Heartbeat {
+  required string node_host = 1;
+  required int32 node_port = 2;
+  required int32 heartbeat = 3;
+}
+
+message Gossip {
+  enum Type { HEARTBEAT = 1; }
+
+  // Identifies which field is filled in.
+  required Type type = 1;
+  
+  // Message signature
+  optional string mac = 2;
+
+  // One of the following will be filled in.
+  optional Heartbeat heartbeat = 3;
+}

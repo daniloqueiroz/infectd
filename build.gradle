@@ -8,6 +8,7 @@ buildscript {
                 'com.mapvine:gradle-cobertura-plugin:1.0',
                 'nl.javadude.gradle.plugins:license-gradle-plugin:0.6.0',
                 'com.github.ben-manes:gradle-versions-plugin:0.3',
+                'com.tomcawley:gradle-protobuf-plugin:0.3',
                 )
     }
 }
@@ -16,6 +17,7 @@ repositories {
 }
 
 apply plugin: 'java'
+apply plugin: 'gradleProtobufPlugin'
 // extra plugins
 apply plugin: 'eclipse'
 apply plugin: 'versions'
@@ -33,7 +35,8 @@ dependencies {
         
         // Logging Facade
         'org.slf4j:slf4j-api:1.7.5',
-        
+
+        'com.google.protobuf:protobuf-java:2.4.1',
     )
 
     runtime (
@@ -67,6 +70,20 @@ javadoc {
         stylesheetFile = rootProject.file('./extras/javadoc-stylesheet.css')
     }
 }
+
+protoBuf {
+
+    protoc {
+        'Linux' {
+            path = '/usr/bin/protoc'
+        }
+    }
+
+    lang {
+        java
+    }
+}
+
 
 [findbugsMain, findbugsTest]*.reports {
     xml.enabled false
