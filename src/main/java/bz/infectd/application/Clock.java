@@ -10,9 +10,12 @@ import bz.infectd.membership.Heartbeat;
 import bz.infectd.membership.HeartbeatMonitor;
 
 /**
+ * This class periodically ticks to perform system maintenance task, such as
+ * pulsing this system heartbeat and synchronizing the Journal.
+ * 
  * @author Danilo Queiroz <dpenna.queiroz@gmail.com>
  */
-public class Clock {
+public class Clock implements Runnable {
 
     private static final Logger logger = getLogger(Clock.class);
     private Journal journal;
@@ -29,6 +32,10 @@ public class Clock {
         Heartbeat hb = this.monitor.heartbeat();
         this.journal.add(createEntry(hb));
         this.journal.sync();
-        // TODO propagate entries to other peers
+    }
+
+    @Override
+    public void run() {
+        this.tick();
     }
 }
