@@ -1,12 +1,11 @@
 package bz.infectd.communication.udp;
 
+import static bz.infectd.application.EventLoopWrapper.systemEventLoop;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelOption;
-import io.netty.channel.EventLoopGroup;
-import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.DatagramPacket;
 import io.netty.channel.socket.nio.NioDatagramChannel;
 import io.netty.handler.logging.LogLevel;
@@ -29,11 +28,8 @@ public class Client {
     }
 
     public void send(Gossip message) throws Exception {
-        // TODO remove
-        EventLoopGroup group = new NioEventLoopGroup();
-
         Bootstrap bootstrap = new Bootstrap();
-        bootstrap.group(group).channel(NioDatagramChannel.class)
+        bootstrap.group(systemEventLoop()).channel(NioDatagramChannel.class)
                 .option(ChannelOption.SO_BROADCAST, false)
                 .handler(new LoggingHandler(Client.class, LogLevel.INFO));
 
@@ -41,9 +37,6 @@ public class Client {
 
         ch.writeAndFlush(this.createDatagramPacket(message));
         ch.close();
-
-        // TODO remove
-        group.shutdownGracefully();
     }
 
     private DatagramPacket createDatagramPacket(Gossip message) {

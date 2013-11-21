@@ -1,11 +1,10 @@
 package bz.infectd.communication.udp;
 
+import static bz.infectd.application.EventLoopWrapper.systemEventLoop;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.EventLoopGroup;
 import io.netty.channel.SimpleChannelInboundHandler;
-import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.DatagramPacket;
 import io.netty.channel.socket.nio.NioDatagramChannel;
 import bz.infectd.communication.protocol.gossip.P2PProtocol.Gossip;
@@ -22,17 +21,10 @@ public class Server extends SimpleChannelInboundHandler<DatagramPacket> {
     }
 
     public void listen() throws Exception {
-        // TODO remove
-        EventLoopGroup group = new NioEventLoopGroup();
-        try {
-            Bootstrap bootstrap = new Bootstrap();
-            bootstrap.group(group).channel(NioDatagramChannel.class).handler(this);
-            // TODO remove no await
-            bootstrap.bind(this.port).sync().channel().closeFuture().await();
-        } finally {
-            // TODO remove
-            group.shutdownGracefully();
-        }
+        Bootstrap bootstrap = new Bootstrap();
+        bootstrap.group(systemEventLoop()).channel(NioDatagramChannel.class).handler(this);
+        // TODO remove no await
+        bootstrap.bind(this.port).sync().channel().closeFuture().await();
     }
 
     @Override
