@@ -1,6 +1,10 @@
 package bz.infectd.core;
 
 import static bz.infectd.journaling.Entry.Builder.createEntry;
+import static org.slf4j.LoggerFactory.getLogger;
+
+import org.slf4j.Logger;
+
 import bz.infectd.communication.gossip.GossipHandler;
 import bz.infectd.communication.gossip.protocol.Messages.Gossip;
 import bz.infectd.communication.gossip.protocol.Messages.Gossip.Type;
@@ -15,7 +19,7 @@ import bz.infectd.membership.Heartbeat;
  * @author Danilo Queiroz <dpenna.queiroz@gmail.com>
  */
 public class GossipToEntryAdapter implements GossipHandler {
-
+    private static final Logger logger = getLogger(GossipToEntryAdapter.class);
     private Journal journal;
 
     public GossipToEntryAdapter(Journal journal) {
@@ -31,6 +35,7 @@ public class GossipToEntryAdapter implements GossipHandler {
         switch (message.getType().getNumber()) {
         case Type.HEARTBEAT_VALUE:
             Heartbeat hb = this.translate(message.getHeartbeat());
+            logger.info("Heartbeart received: {}", hb);
             entry = createEntry(hb);
             break;
         default:
