@@ -1,4 +1,4 @@
-package bz.infectd.communication;
+package bz.infectd.core;
 
 /**
  * @author Danilo Queiroz <dpenna.queiroz@gmail.com>

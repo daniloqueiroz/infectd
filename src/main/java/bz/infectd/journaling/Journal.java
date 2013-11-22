@@ -9,6 +9,8 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import org.slf4j.Logger;
 
+import bz.infectd.core.EntriesProcessor;
+
 /**
  * Keep tracks of all the events received that are pending to process.
  * It keeps all the entries on a buffer and on {@link Journal#sync()} it sends

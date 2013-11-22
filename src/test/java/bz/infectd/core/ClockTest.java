@@ -1,4 +1,4 @@
-package bz.infectd.application;
+package bz.infectd.core;
 
 import static bz.infectd.journaling.Entry.Builder.createEntry;
 import static org.easymock.EasyMock.eq;
@@ -12,6 +12,7 @@ import java.util.LinkedList;
 
 import org.junit.Test;
 
+import bz.infectd.core.Clock;
 import bz.infectd.journaling.Entry;
 import bz.infectd.journaling.Journal;
 import bz.infectd.membership.Heartbeat;

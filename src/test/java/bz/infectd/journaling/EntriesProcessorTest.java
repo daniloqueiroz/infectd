@@ -9,6 +9,7 @@ import java.util.LinkedList;
 
 import org.junit.Test;
 
+import bz.infectd.core.EntriesProcessor;
 import bz.infectd.membership.Heartbeat;
 import bz.infectd.membership.MembershipBoard;
 

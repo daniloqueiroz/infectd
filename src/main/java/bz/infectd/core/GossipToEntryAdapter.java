@@ -1,4 +1,4 @@
-package bz.infectd.communication;
+package bz.infectd.core;
 
 import static bz.infectd.journaling.Entry.Builder.createEntry;
 import bz.infectd.communication.protocol.gossip.P2PProtocol.Gossip;

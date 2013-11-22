@@ -1,4 +1,4 @@
-package bz.infectd.communication;
+package bz.infectd.core;
 
 import static bz.infectd.communication.protocol.MessageFactory.createMessage;
 import static org.easymock.EasyMock.eq;
@@ -9,6 +9,7 @@ import static org.powermock.api.easymock.PowerMock.verifyAll;
 import org.junit.Test;
 
 import bz.infectd.communication.protocol.gossip.P2PProtocol.Gossip;
+import bz.infectd.core.GossipToEntryAdapter;
 import bz.infectd.journaling.Entry;
 import bz.infectd.journaling.Journal;
 import bz.infectd.membership.Heartbeat;

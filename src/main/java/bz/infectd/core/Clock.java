@@ -1,4 +1,4 @@
-package bz.infectd.application;
+package bz.infectd.core;
 
 import static bz.infectd.journaling.Entry.Builder.createEntry;
 import static org.slf4j.LoggerFactory.getLogger;

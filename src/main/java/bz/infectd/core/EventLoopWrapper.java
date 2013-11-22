@@ -1,4 +1,4 @@
-package bz.infectd.application;
+package bz.infectd.core;
 
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;

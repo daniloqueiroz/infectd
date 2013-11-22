@@ -1,4 +1,4 @@
-package bz.infectd.journaling;
+package bz.infectd.core;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -7,6 +7,7 @@ import java.util.LinkedList;
 
 import org.slf4j.Logger;
 
+import bz.infectd.journaling.Entry;
 import bz.infectd.membership.Heartbeat;
 import bz.infectd.membership.MembershipBoard;
 

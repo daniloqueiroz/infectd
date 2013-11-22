@@ -12,6 +12,8 @@ import java.util.Iterator;
 import org.junit.Before;
 import org.junit.Test;
 
+import bz.infectd.core.EntriesProcessor;
+
 public class JournalTest {
 
     private Journal journal;

@@ -1,7 +1,7 @@
 package bz.infectd.communication.udp;
 
-import static bz.infectd.application.EventLoopWrapper.systemEventLoop;
 import static bz.infectd.communication.udp.MessagesTranslation.gossipToDatagram;
+import static bz.infectd.core.EventLoopWrapper.systemEventLoop;
 import static org.slf4j.LoggerFactory.getLogger;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
