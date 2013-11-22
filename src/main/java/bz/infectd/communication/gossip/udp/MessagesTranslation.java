@@ -1,4 +1,4 @@
-package bz.infectd.communication.udp;
+package bz.infectd.communication.gossip.udp;
 
 import java.net.InetSocketAddress;
 
@@ -7,7 +7,7 @@ import com.google.protobuf.InvalidProtocolBufferException;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.socket.DatagramPacket;
-import bz.infectd.communication.protocol.gossip.P2PProtocol.Gossip;
+import bz.infectd.communication.gossip.protocol.P2PProtocol.Gossip;
 
 /**
  * Translate {@link Gossip} message to {@link DatagramPacket} and vice-versa

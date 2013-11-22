@@ -1,7 +1,7 @@
 package gossip;
 
-option java_package = "bz.infectd.communication.protocol.gossip";
-option java_outer_classname = "P2PProtocol";
+option java_package = "bz.infectd.communication.gossip.protocol";
+option java_outer_classname = "Messages";
 option optimize_for = SPEED;
 
 message Heartbeat {

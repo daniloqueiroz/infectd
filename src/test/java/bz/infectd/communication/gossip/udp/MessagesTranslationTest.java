@@ -1,7 +1,7 @@
-package bz.infectd.communication.udp;
+package bz.infectd.communication.gossip.udp;
 
-import static bz.infectd.communication.udp.MessagesTranslation.datagramToGossip;
-import static bz.infectd.communication.udp.MessagesTranslation.gossipToDatagram;
+import static bz.infectd.communication.gossip.udp.MessagesTranslation.datagramToGossip;
+import static bz.infectd.communication.gossip.udp.MessagesTranslation.gossipToDatagram;
 import static org.junit.Assert.assertEquals;
 import io.netty.channel.socket.DatagramPacket;
 
@@ -9,8 +9,8 @@ import java.net.InetSocketAddress;
 
 import org.junit.Test;
 
-import bz.infectd.communication.protocol.gossip.P2PProtocol.Gossip;
-import bz.infectd.communication.protocol.gossip.P2PProtocol.Gossip.Type;
+import bz.infectd.communication.gossip.protocol.P2PProtocol.Gossip;
+import bz.infectd.communication.gossip.protocol.P2PProtocol.Gossip.Type;
 
 import com.google.protobuf.InvalidProtocolBufferException;
 

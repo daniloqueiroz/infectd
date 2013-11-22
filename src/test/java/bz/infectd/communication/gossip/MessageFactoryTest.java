@@ -1,12 +1,12 @@
-package bz.infectd.communication.protocol;
+package bz.infectd.communication.gossip;
 
-import static bz.infectd.communication.protocol.MessageFactory.createMessage;
+import static bz.infectd.communication.gossip.MessageFactory.createMessage;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import bz.infectd.communication.protocol.gossip.P2PProtocol.Gossip;
-import bz.infectd.communication.protocol.gossip.P2PProtocol.Gossip.Type;
+import bz.infectd.communication.gossip.protocol.P2PProtocol.Gossip;
+import bz.infectd.communication.gossip.protocol.P2PProtocol.Gossip.Type;
 import bz.infectd.membership.Heartbeat;
 
 public class MessageFactoryTest {

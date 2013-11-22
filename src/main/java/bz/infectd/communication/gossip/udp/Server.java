@@ -1,6 +1,6 @@
-package bz.infectd.communication.udp;
+package bz.infectd.communication.gossip.udp;
 
-import static bz.infectd.communication.udp.MessagesTranslation.datagramToGossip;
+import static bz.infectd.communication.gossip.udp.MessagesTranslation.datagramToGossip;
 import static bz.infectd.core.EventLoopWrapper.systemEventLoop;
 import static org.slf4j.LoggerFactory.getLogger;
 import io.netty.bootstrap.Bootstrap;
@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.slf4j.Logger;
 
-import bz.infectd.communication.protocol.gossip.P2PProtocol.Gossip;
+import bz.infectd.communication.gossip.protocol.P2PProtocol.Gossip;
 
 /**
  * UDP Server to receive {@link Gossip} messages.

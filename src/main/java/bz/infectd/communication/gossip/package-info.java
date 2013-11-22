@@ -7,8 +7,8 @@
  * 
  * The **gossip** package contains the generated code to the messages used by the gossip protocol.
  * 
- * The {@link bz.infectd.communication.protocol.MessageFactory} provides methods to create protocol
+ * The {@link bz.infectd.communication.gossip.MessageFactory} provides methods to create protocol
  * buffer's **messages* from the internal objects, such as {@link bz.infectd.membership.Heartbeat}.
  * @author Danilo Queiroz <dpenna.queiroz@gmail.com>
  */
-package bz.infectd.communication.protocol;
+package bz.infectd.communication.gossip;
