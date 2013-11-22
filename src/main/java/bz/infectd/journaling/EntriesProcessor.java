@@ -25,7 +25,7 @@ public class EntriesProcessor {
     }
 
     public void process(Collection<Entry<?>> entries) {
-        logger.info("Processing %s entries", entries.size());
+        logger.info("Processing {} entries", entries.size());
         ContentsManager contents = new ContentsManager();
         for (Entry<?> entry : entries) {
             contents.add(entry);

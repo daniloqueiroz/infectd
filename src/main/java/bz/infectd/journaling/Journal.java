@@ -34,7 +34,7 @@ public class Journal {
      */
     public void add(Entry<?> entry) {
         this.monitor.lock();
-        logger.debug("Adding new entry %s", entry);
+        logger.debug("Adding new entry {}", entry);
         this.entries.add(entry);
         this.monitor.unlock();
     }
