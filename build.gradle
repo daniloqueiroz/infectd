@@ -58,7 +58,7 @@ dependencies {
     )
 }
 
-mainClassName = "bz.infectd.application.Runner"
+mainClassName = "bz.infectd.Application"
 
 test { 
     // Avoid VerifyError regards cobertura instrumentation
