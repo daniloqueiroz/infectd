@@ -38,8 +38,9 @@ public class Server extends SimpleChannelInboundHandler<DatagramPacket> {
 
     /**
      * Makes the server start listen to the incoming PORT
+     * @throws InterruptedException 
      */
-    public void listen() throws Exception {
+    public void listen() throws InterruptedException {
         Bootstrap bootstrap = new Bootstrap();
         bootstrap.group(systemEventLoop()).channel(NioDatagramChannel.class).handler(this);
         logger.info("UDP server listen to port {}", this.port);
