@@ -14,8 +14,8 @@ import java.net.InetSocketAddress;
 
 import org.slf4j.Logger;
 
-import bz.infectd.communication.gossip.protocol.P2PProtocol.Gossip;
-import bz.infectd.communication.gossip.protocol.P2PProtocol.Gossip.Type;
+import bz.infectd.communication.gossip.protocol.Messages.Gossip;
+import bz.infectd.communication.gossip.protocol.Messages.Gossip.Type;
 
 /**
  * A client to sent UDP {@link Gossip} messages to a given destination

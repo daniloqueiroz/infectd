@@ -2,8 +2,8 @@ package bz.infectd.core;
 
 import static bz.infectd.journaling.Entry.Builder.createEntry;
 import bz.infectd.communication.gossip.GossipHandler;
-import bz.infectd.communication.gossip.protocol.P2PProtocol.Gossip;
-import bz.infectd.communication.gossip.protocol.P2PProtocol.Gossip.Type;
+import bz.infectd.communication.gossip.protocol.Messages.Gossip;
+import bz.infectd.communication.gossip.protocol.Messages.Gossip.Type;
 import bz.infectd.journaling.Entry;
 import bz.infectd.journaling.Journal;
 import bz.infectd.membership.Heartbeat;
@@ -41,11 +41,11 @@ public class GossipToEntryAdapter implements GossipHandler {
 
     /**
      * Translate a
-     * {@link bz.infectd.communication.gossip.protocol.P2PProtocol.Heartbeat} to
+     * {@link bz.infectd.communication.gossip.protocol.Messages.Heartbeat} to
      * a {@link Heartbeat}
      */
     private Heartbeat translate(
-            bz.infectd.communication.gossip.protocol.P2PProtocol.Heartbeat heartbeat) {
+            bz.infectd.communication.gossip.protocol.Messages.Heartbeat heartbeat) {
         Heartbeat hb = new Heartbeat(heartbeat.getNodeHost(), heartbeat.getNodePort());
         hb.clock(heartbeat.getHeartbeat());
         return hb;

@@ -5,8 +5,8 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import bz.infectd.communication.gossip.protocol.P2PProtocol.Gossip;
-import bz.infectd.communication.gossip.protocol.P2PProtocol.Gossip.Type;
+import bz.infectd.communication.gossip.protocol.Messages.Gossip;
+import bz.infectd.communication.gossip.protocol.Messages.Gossip.Type;
 import bz.infectd.membership.Heartbeat;
 
 public class MessageFactoryTest {

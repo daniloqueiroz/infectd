@@ -1,6 +1,6 @@
 package bz.infectd.communication.gossip;
 
-import bz.infectd.communication.gossip.protocol.P2PProtocol.Gossip;
+import bz.infectd.communication.gossip.protocol.Messages.Gossip;
 import bz.infectd.journaling.Entry;
 import bz.infectd.journaling.Journal;
 

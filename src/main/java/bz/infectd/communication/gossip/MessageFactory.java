@@ -1,9 +1,9 @@
 package bz.infectd.communication.gossip;
 
-import bz.infectd.communication.gossip.protocol.P2PProtocol;
-import bz.infectd.communication.gossip.protocol.P2PProtocol.Gossip;
-import bz.infectd.communication.gossip.protocol.P2PProtocol.Gossip.Builder;
-import bz.infectd.communication.gossip.protocol.P2PProtocol.Gossip.Type;
+import bz.infectd.communication.gossip.protocol.Messages;
+import bz.infectd.communication.gossip.protocol.Messages.Gossip;
+import bz.infectd.communication.gossip.protocol.Messages.Gossip.Builder;
+import bz.infectd.communication.gossip.protocol.Messages.Gossip.Type;
 import bz.infectd.membership.Heartbeat;
 
 /**
@@ -34,7 +34,7 @@ public class MessageFactory {
      */
     public static Gossip createMessage(Heartbeat hb) {
         Gossip.Builder builder = createGossipMessageBuilder(Type.HEARTBEAT);
-        builder.setHeartbeat(P2PProtocol.Heartbeat.newBuilder().setHeartbeat(hb.clock())
+        builder.setHeartbeat(Messages.Heartbeat.newBuilder().setHeartbeat(hb.clock())
                 .setNodeHost(hb.address()).setNodePort(hb.port()));
         return builder.build();
     }

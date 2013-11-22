@@ -9,8 +9,8 @@ import java.net.InetSocketAddress;
 
 import org.junit.Test;
 
-import bz.infectd.communication.gossip.protocol.P2PProtocol.Gossip;
-import bz.infectd.communication.gossip.protocol.P2PProtocol.Gossip.Type;
+import bz.infectd.communication.gossip.protocol.Messages.Gossip;
+import bz.infectd.communication.gossip.protocol.Messages.Gossip.Type;
 
 import com.google.protobuf.InvalidProtocolBufferException;
 

@@ -13,7 +13,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.slf4j.Logger;
 
-import bz.infectd.communication.gossip.protocol.P2PProtocol.Gossip;
+import bz.infectd.communication.gossip.protocol.Messages.Gossip;
 
 /**
  * UDP Server to receive {@link Gossip} messages.

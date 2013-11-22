@@ -9,7 +9,7 @@ import static org.powermock.api.easymock.PowerMock.verifyAll;
 import org.junit.Test;
 
 import bz.infectd.communication.gossip.GossipHandler;
-import bz.infectd.communication.gossip.protocol.P2PProtocol.Gossip;
+import bz.infectd.communication.gossip.protocol.Messages.Gossip;
 import bz.infectd.core.GossipToEntryAdapter;
 import bz.infectd.journaling.Entry;
 import bz.infectd.journaling.Journal;
