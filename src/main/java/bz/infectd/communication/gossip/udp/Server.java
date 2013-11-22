@@ -13,6 +13,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.slf4j.Logger;
 
+import bz.infectd.communication.gossip.GossipHandler;
 import bz.infectd.communication.gossip.protocol.Messages.Gossip;
 
 /**
@@ -22,15 +23,17 @@ import bz.infectd.communication.gossip.protocol.Messages.Gossip;
  */
 public class Server extends SimpleChannelInboundHandler<DatagramPacket> {
 
-    private static final Logger logger = getLogger(Client.class);
+    private static final Logger logger = getLogger(Server.class);
     private final int port;
+    private GossipHandler gossipHandler;
 
     /**
      * @param port
      *            The port this server should listen to.
      */
-    public Server(int port) {
+    public Server(int port, GossipHandler handler) {
         this.port = port;
+        this.gossipHandler = handler;
     }
 
     /**
@@ -58,15 +61,19 @@ public class Server extends SimpleChannelInboundHandler<DatagramPacket> {
             throws Exception {
         logger.debug("Message received: {}", packet);
         Gossip message = datagramToGossip(packet);
-        logger.info("Message received: {}", message);
-        // TODO do something with the message
+        this.gossipHandler.addEntry(message);
     }
 
     /**
      * Just for ad-hoc tests
      */
     public static void main(String[] args) throws Exception {
-        new Server(7777).listen();
+        new Server(7777, new GossipHandler() {
+            @Override
+            public void addEntry(Gossip message) {
+                logger.info("Message received: {}", message);
+            }
+        }).listen();
         systemEventLoop().awaitTermination(5, TimeUnit.MINUTES);
     }
 }
