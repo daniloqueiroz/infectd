@@ -1,9 +1,9 @@
 package bz.infectd.communication.udp;
 
 import static bz.infectd.application.EventLoopWrapper.systemEventLoop;
+import static bz.infectd.communication.udp.MessagesTranslation.datagramToGossip;
 import static org.slf4j.LoggerFactory.getLogger;
 import io.netty.bootstrap.Bootstrap;
-import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.socket.DatagramPacket;
@@ -57,27 +57,9 @@ public class Server extends SimpleChannelInboundHandler<DatagramPacket> {
     protected void messageReceived(ChannelHandlerContext ctx, DatagramPacket packet)
             throws Exception {
         logger.debug("Message received: {}", packet);
-        byte[] array = this.extractBytes(packet);
-        Gossip message = Gossip.parseFrom(array);
+        Gossip message = datagramToGossip(packet);
         logger.info("Message received: {}", message);
         // TODO do something with the message
-    }
-
-    /**
-     * Extracts the byte[] content of the given packet
-     */
-    private byte[] extractBytes(DatagramPacket packet) {
-        ByteBuf buf = packet.content();
-        final byte[] array;
-        final int length = buf.readableBytes();
-
-        if (buf.hasArray()) {
-            array = buf.array();
-        } else {
-            array = new byte[length];
-            buf.getBytes(buf.readerIndex(), array, 0, length);
-        }
-        return array;
     }
 
     /**

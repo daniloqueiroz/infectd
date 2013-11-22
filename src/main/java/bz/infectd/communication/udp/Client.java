@@ -1,13 +1,11 @@
 package bz.infectd.communication.udp;
 
 import static bz.infectd.application.EventLoopWrapper.systemEventLoop;
+import static bz.infectd.communication.udp.MessagesTranslation.gossipToDatagram;
 import static org.slf4j.LoggerFactory.getLogger;
 import io.netty.bootstrap.Bootstrap;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelOption;
-import io.netty.channel.socket.DatagramPacket;
 import io.netty.channel.socket.nio.NioDatagramChannel;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
@@ -67,19 +65,11 @@ public class Client {
 
         logger.debug("Trying to send {} to {}", message, this.address);
         Channel ch = bootstrap.bind(0).sync().channel();
-        ch.writeAndFlush(this.createDatagramPacket(message));
+        ch.writeAndFlush(gossipToDatagram(message, this.address));
         logger.info("Message {} sent to {}", message, this.address);
         ch.close();
     }
 
-    /**
-     * Creates a {@link DatagramPacket} from the given {@link Gossip} message
-     */
-    private DatagramPacket createDatagramPacket(Gossip message) {
-        ByteBuf buf = Unpooled.copiedBuffer(message.toByteArray());
-        return new DatagramPacket(buf, this.address);
-    }
-    
     /**
      * Just for ad-hoc tests
      */
