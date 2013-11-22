@@ -1,10 +1,11 @@
 package bz.infectd.membership;
-
 import static java.lang.Math.max;
 
+import com.google.common.base.Objects;
+
 /**
- * Holds the heartbeat clock for a given node.
- * It uses a Lamport Clock to track the heartbeat events.
+ * Holds the heartbeat clock for a given node. It uses a Lamport Clock to track
+ * the heartbeat events.
  * 
  * @author Danilo Queiroz <dpenna.queiroz@gmail.com>
  */
@@ -45,5 +46,29 @@ public class Heartbeat {
 
     public int port() {
         return this.port;
+    }
+    
+    /* (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(this.address(), this.port(), this.clock());
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Heartbeat) {
+            Heartbeat other = (Heartbeat) obj;
+            return (this.port() == other.port() && this.address().equals(other.address()) && this
+                    .clock() == other.clock());
+        } else {
+            return false;
+        }
     }
 }
