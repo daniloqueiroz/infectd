@@ -1,4 +1,5 @@
 package bz.infectd.membership;
+
 import static java.lang.Math.max;
 
 import com.google.common.base.Objects;
@@ -47,8 +48,10 @@ public class Heartbeat {
     public int port() {
         return this.port;
     }
-    
-    /* (non-Javadoc)
+
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.lang.Object#hashCode()
      */
     @Override
@@ -70,5 +73,15 @@ public class Heartbeat {
         } else {
             return false;
         }
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+        return String.format("Heartbeat for %s:%s: %s", this.address(), this.port(), this.clock());
     }
 }
