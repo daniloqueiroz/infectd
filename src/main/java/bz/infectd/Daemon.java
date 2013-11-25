@@ -49,8 +49,8 @@ public class Daemon {
         this.journal = this.setupJornal();
         this.monitor = new HeartbeatMonitor(new Heartbeat(this.hostname, this.port));
         this.server = this.setupServer();
-        this.server.listen();
         this.broadcastHeartbeat();
+        this.server.listen();
     }
 
     private Journal setupJornal() {
