@@ -27,6 +27,7 @@ public class Client {
     private static final String BROADCAST_ADDRESS = "255.255.255.255";
     private static final Logger logger = getLogger(Client.class);
     private InetSocketAddress address;
+    private boolean isBroadcast = false;
 
     /**
      * Creates a client to broadcast {@link Gossip} messages over UDP.
@@ -36,6 +37,7 @@ public class Client {
      */
     public Client(int port) {
         this.address = new InetSocketAddress(BROADCAST_ADDRESS, port);
+        this.isBroadcast = true;
     }
 
     /**
@@ -60,7 +62,7 @@ public class Client {
     public void send(Gossip message) throws InterruptedException {
         Bootstrap bootstrap = new Bootstrap();
         bootstrap.group(systemEventLoop()).channel(NioDatagramChannel.class)
-                .option(ChannelOption.SO_BROADCAST, false)
+                .option(ChannelOption.SO_BROADCAST, this.isBroadcast)
                 .handler(new LoggingHandler(Client.class, LogLevel.INFO));
 
         logger.debug("Trying to send {} to {}", message, this.address);
