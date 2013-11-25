@@ -10,7 +10,7 @@ RUN apt-get update
 RUN apt-get install -y openjdk-7-jre-headless
 
 # Preparing to running
-EXPOSE 4242
+EXPOSE 8212
 WORKDIR /opt/infectd-1.0/bin
 USER daemon
 #ENTRYPOINT ["/opt/infectd-1.0/bin/infectd"]

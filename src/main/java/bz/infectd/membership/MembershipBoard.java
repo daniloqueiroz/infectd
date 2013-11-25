@@ -19,8 +19,7 @@ import org.slf4j.Logger;
 public class MembershipBoard {
 
     private static final Logger logger = getLogger(MembershipBoard.class);
-    // TODO move to config
-    public static final int MISSING_ROUNDS_TO_DEATH = 3;
+    public static final int MISSING_ROUNDS_TO_DEATH = 3; // TODO config
 
     private Map<String, ExtendedHeartbeat> heartbeats = new HashMap<>();
 

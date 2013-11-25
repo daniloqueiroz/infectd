@@ -26,8 +26,8 @@ import bz.infectd.membership.MembershipBoard;
  */
 public class Daemon {
 
-    public static final int PORT = 4242;
-    private static final long GOSSIP_INTERVAL = 30;
+    public static final int PORT = 8212; // TODO config
+    private static final long GOSSIP_INTERVAL = 30; // TODO config
     private static final Logger logger = getLogger(Daemon.class);
     private Journal journal;
     private HeartbeatMonitor monitor;
@@ -81,7 +81,7 @@ public class Daemon {
         if (this.clock == null) {
             this.clock = new Clock(this.journal, this.monitor);
             EventLoopGroup eventLoop = systemEventLoop();
-            eventLoop.scheduleWithFixedDelay(this.clock, 10, GOSSIP_INTERVAL, TimeUnit.SECONDS);
+            eventLoop.scheduleWithFixedDelay(this.clock, 0, GOSSIP_INTERVAL, TimeUnit.SECONDS);
         }
     }
 

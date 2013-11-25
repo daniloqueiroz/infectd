@@ -11,8 +11,7 @@ import io.netty.channel.nio.NioEventLoopGroup;
  */
 public class EventLoopWrapper {
 
-    // TODO make it configurable
-    private static final int NUMBER_OF_THREADS = 1;
+    private static final int NUMBER_OF_THREADS = 1; // TODO config
     private static final EventLoopGroup loop = new NioEventLoopGroup(NUMBER_OF_THREADS);
 
     public static EventLoopGroup systemEventLoop() {
