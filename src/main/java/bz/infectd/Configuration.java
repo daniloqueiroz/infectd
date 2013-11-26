@@ -1,5 +1,6 @@
 package bz.infectd;
 
+import static java.lang.Float.parseFloat;
 import static java.lang.Integer.parseInt;
 import static java.lang.Boolean.parseBoolean;
 import static java.lang.ClassLoader.getSystemResourceAsStream;
@@ -70,5 +71,16 @@ public class Configuration {
      */
     public boolean debugMode() {
         return parseBoolean(this.properties.getProperty("debug"));
+    }
+
+    /**
+     * @return
+     */
+    public int minimunPropagationFactor() {
+        return parseInt(this.properties.getProperty("gossip.min_propagation_factor"));
+    }
+    
+    public float propagationFactor() {
+        return parseFloat(this.properties.getProperty("gossip.propagation_factor"));
     }
 }

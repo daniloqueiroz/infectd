@@ -41,4 +41,14 @@ public class ConfigurationTest {
     public void getsDefaultDebugMode() {
         assertEquals(true, this.conf.debugMode());
     }
+    
+    @Test
+    public void getsDefaultMinPropagationFactor() {
+        assertEquals(3, this.conf.minimunPropagationFactor());
+    }
+    
+    @Test
+    public void getsDefaultPropagationFactor() {
+        assertEquals(0.3, this.conf.propagationFactor(), 0.01);
+    }
 }
