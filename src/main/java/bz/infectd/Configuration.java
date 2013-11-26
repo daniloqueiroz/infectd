@@ -1,6 +1,7 @@
 package bz.infectd;
 
 import static java.lang.Integer.parseInt;
+import static java.lang.Boolean.parseBoolean;
 import static java.lang.ClassLoader.getSystemResourceAsStream;
 
 import java.io.IOException;
@@ -64,4 +65,10 @@ public class Configuration {
         return parseInt(this.properties.getProperty("membership.rounds_count"));
     }
 
+    /**
+     * @return <code>true</code> if on debug mode, <code>false</code> otherwise.
+     */
+    public boolean debugMode() {
+        return parseBoolean(this.properties.getProperty("debug"));
+    }
 }

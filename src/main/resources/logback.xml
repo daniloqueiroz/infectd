@@ -1,11 +1,36 @@
 <configuration>
-  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
-    <encoder>
-      <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
-    </encoder>
-  </appender>
+	<appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
 
-  <root level="debug">
-    <appender-ref ref="STDOUT" />
-  </root>
+    <!-- File Appenders -->
+    <appender name="logstash" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>/var/log/infectd.log</file>
+        <!-- https://github.com/logstash/logstash-logback-encoder -->
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder" />
+    </appender>
+
+  <!-- Loggers -->
+    <if condition='property("debug").equalsIgnoreCase("true")'>
+        <!-- DEBUG MODE -->
+        <then>
+            <logger name="io.netty" level="INFO" additivity="false">
+                <appender-ref ref="stdout" />
+            </logger>
+            <root level="DEBUG">
+                <appender-ref ref="stdout" />
+            </root>
+        </then>
+        <!-- NORMAL MODE -->
+        <else>
+            <logger name="io.netty" level="WARN" additivity="false">
+                <appender-ref ref="general" />
+            </logger>
+            <root level="INFO">
+                <appender-ref ref="logstash" />
+            </root>
+        </else>
+    </if>
 </configuration>

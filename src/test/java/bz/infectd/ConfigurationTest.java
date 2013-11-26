@@ -36,4 +36,9 @@ public class ConfigurationTest {
     public void getsDefaultRoundsCount() {
         assertEquals(4, this.conf.roundsCount());
     }
+    
+    @Test
+    public void getsDefaultDebugMode() {
+        assertEquals(true, this.conf.debugMode());
+    }
 }

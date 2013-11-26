@@ -1,5 +1,7 @@
 package bz.infectd;
 
+import static java.lang.String.valueOf;
+import static bz.infectd.Configuration.getConfiguration;
 import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
@@ -13,7 +15,10 @@ import java.util.Enumeration;
 public class Application {
 
     public static void main(String[] args) throws Exception {
+        Configuration config = getConfiguration();
+        System.setProperty("debug", valueOf(config.debugMode()));
         // TODO parse parameters
+
         String address = null;
         if (args.length > 0) {
             address = args[0];
