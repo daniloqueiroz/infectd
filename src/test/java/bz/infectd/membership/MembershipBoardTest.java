@@ -1,5 +1,6 @@
 package bz.infectd.membership;
 
+import static bz.infectd.Configuration.getConfiguration;
 import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -61,7 +62,7 @@ public class MembershipBoardTest {
         Heartbeat hb1 = new Heartbeat("some", 7);
         Heartbeat hb2 = new Heartbeat("other", 7);
         this.board.updateHeartbeats(asList(hb1, hb2));
-        for (int i = 0; i <= MembershipBoard.MISSING_ROUNDS_TO_DEATH; i++) {
+        for (int i = 0; i <= getConfiguration().roundsCount(); i++) {
             hb1.clock(hb1.clock() + 1);
             this.board.updateHeartbeats(asList(hb1));
         }

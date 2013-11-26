@@ -1,5 +1,6 @@
 package bz.infectd.core;
 
+import static bz.infectd.Configuration.getConfiguration;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 
@@ -11,8 +12,8 @@ import io.netty.channel.nio.NioEventLoopGroup;
  */
 public class EventLoopWrapper {
 
-    private static final int NUMBER_OF_THREADS = 1; // TODO config
-    private static final EventLoopGroup loop = new NioEventLoopGroup(NUMBER_OF_THREADS);
+    private static final EventLoopGroup loop = new NioEventLoopGroup(getConfiguration()
+            .threadsCount());
 
     public static EventLoopGroup systemEventLoop() {
         return loop;

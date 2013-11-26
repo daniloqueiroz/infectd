@@ -1,5 +1,6 @@
 package bz.infectd.membership;
 
+import static bz.infectd.Configuration.getConfiguration;
 import static org.slf4j.LoggerFactory.getLogger;
 
 import java.util.Collection;
@@ -19,8 +20,6 @@ import org.slf4j.Logger;
 public class MembershipBoard {
 
     private static final Logger logger = getLogger(MembershipBoard.class);
-    public static final int MISSING_ROUNDS_TO_DEATH = 3; // TODO config
-
     private Map<String, ExtendedHeartbeat> heartbeats = new HashMap<>();
 
     /**
@@ -80,7 +79,7 @@ public class MembershipBoard {
                 heartbeat.markNotChanged();
             } else {
                 heartbeat.markMissing();
-                if (heartbeat.missingRounds() > MISSING_ROUNDS_TO_DEATH) {
+                if (heartbeat.missingRounds() > getConfiguration().roundsCount()) {
                     toBeRemove.add(createHeartbeatKey(heartbeat.address(), heartbeat.port()));
                 }
             }

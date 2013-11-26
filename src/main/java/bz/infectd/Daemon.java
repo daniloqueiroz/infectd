@@ -1,5 +1,6 @@
 package bz.infectd;
 
+import static bz.infectd.Configuration.getConfiguration;
 import static bz.infectd.communication.gossip.MessageFactory.createMessage;
 import static bz.infectd.core.EventLoopWrapper.systemEventLoop;
 import static org.slf4j.LoggerFactory.getLogger;
@@ -26,28 +27,27 @@ import bz.infectd.membership.MembershipBoard;
  */
 public class Daemon {
 
-    public static final int PORT = 8212; // TODO config
-    private static final long GOSSIP_INTERVAL = 30; // TODO config
     private static final Logger logger = getLogger(Daemon.class);
+    
     private Journal journal;
     private HeartbeatMonitor monitor;
     private Server server;
     private String hostname;
     private Clock clock;
-    private int port;
+    private Configuration config;
 
     protected Daemon(String hostname) {
+        this.config = getConfiguration();
         this.hostname = hostname;
-        this.port = PORT;
     }
 
     /**
      * Boots the Infectd Daemon
      */
     public void boot() throws InterruptedException {
-        logger.info("Starting daemon - {}:{}", this.hostname, this.port);
+        logger.info("Starting daemon - {}:{}", this.hostname, this.config.networkPort());
         this.journal = this.setupJornal();
-        this.monitor = new HeartbeatMonitor(new Heartbeat(this.hostname, this.port));
+        this.monitor = new HeartbeatMonitor(new Heartbeat(this.hostname, this.config.networkPort()));
         this.server = this.setupServer();
         this.broadcastHeartbeat();
         this.server.listen();
@@ -61,7 +61,7 @@ public class Daemon {
 
     private Server setupServer() {
         final GossipHandler handler = new GossipToEntryAdapter(this.journal);
-        Server udpServer = new Server(PORT, new GossipHandler() {
+        Server udpServer = new Server(this.config.networkPort(), new GossipHandler() {
             private transient boolean hasReceivedFirstMessage = false;
 
             @Override
@@ -81,12 +81,12 @@ public class Daemon {
         if (this.clock == null) {
             this.clock = new Clock(this.journal, this.monitor);
             EventLoopGroup eventLoop = systemEventLoop();
-            eventLoop.scheduleWithFixedDelay(this.clock, 0, GOSSIP_INTERVAL, TimeUnit.SECONDS);
+            eventLoop.scheduleWithFixedDelay(this.clock, 0, this.config.clockInterval(), TimeUnit.SECONDS);
         }
     }
 
     private void broadcastHeartbeat() throws InterruptedException {
-        Client udpClient = new Client(this.port);
+        Client udpClient = new Client(this.config.networkPort());
         udpClient.send(createMessage(this.monitor.heartbeat()));
     }
 }
