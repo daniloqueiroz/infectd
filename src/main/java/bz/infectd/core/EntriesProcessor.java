@@ -7,6 +7,7 @@ import java.util.LinkedList;
 
 import org.slf4j.Logger;
 
+import bz.infectd.communication.gossip.PropagationAgent;
 import bz.infectd.journaling.Entry;
 import bz.infectd.membership.Heartbeat;
 import bz.infectd.membership.MembershipBoard;
@@ -33,6 +34,10 @@ public class EntriesProcessor {
         }
 
         this.membersBoard.updateHeartbeats(contents.heartbeats);
+
+        // Propagate the entries to the network
+        PropagationAgent agent = new PropagationAgent(entries, this.membersBoard.heartbeats());
+        agent.propagate();
     }
 
     private class ContentsManager {
