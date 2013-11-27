@@ -3,9 +3,11 @@ package bz.infectd.membership;
 import static bz.infectd.Configuration.getConfiguration;
 import static org.slf4j.LoggerFactory.getLogger;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -25,8 +27,8 @@ public class MembershipBoard {
     /**
      * Gets all the heartbeats.
      */
-    public Collection<ExtendedHeartbeat> heartbeats() {
-        return this.heartbeats.values();
+    public List<ExtendedHeartbeat> heartbeats() {
+        return new ArrayList<>(this.heartbeats.values());
     }
 
     /**
