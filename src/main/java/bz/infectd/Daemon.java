@@ -28,26 +28,25 @@ import bz.infectd.membership.MembershipBoard;
 public class Daemon {
 
     private static final Logger logger = getLogger(Daemon.class);
-    
+
     private Journal journal;
     private HeartbeatMonitor monitor;
     private Server server;
-    private String hostname;
     private Clock clock;
     private Configuration config;
 
-    protected Daemon(String hostname) {
+    protected Daemon() {
         this.config = getConfiguration();
-        this.hostname = hostname;
     }
 
     /**
      * Boots the Infectd Daemon
      */
     public void boot() throws InterruptedException {
-        logger.info("Starting daemon - {}:{}", this.hostname, this.config.networkPort());
+        logger.info("Starting daemon - {}:{}", this.config.hostname(), this.config.networkPort());
         this.journal = this.setupJornal();
-        this.monitor = new HeartbeatMonitor(new Heartbeat(this.hostname, this.config.networkPort()));
+        this.monitor = new HeartbeatMonitor(new Heartbeat(this.config.hostname(),
+                this.config.networkPort()));
         this.server = this.setupServer();
         this.broadcastHeartbeat();
         this.server.listen();
@@ -81,7 +80,8 @@ public class Daemon {
         if (this.clock == null) {
             this.clock = new Clock(this.journal, this.monitor);
             EventLoopGroup eventLoop = systemEventLoop();
-            eventLoop.scheduleWithFixedDelay(this.clock, 0, this.config.clockInterval(), TimeUnit.SECONDS);
+            eventLoop.scheduleWithFixedDelay(this.clock, 0, this.config.clockInterval(),
+                    TimeUnit.SECONDS);
         }
     }
 
