@@ -80,8 +80,9 @@ public class Daemon {
         if (this.clock == null) {
             this.clock = new Clock(this.journal, this.monitor);
             EventLoopGroup eventLoop = systemEventLoop();
-            eventLoop.scheduleWithFixedDelay(this.clock, 0, this.config.clockInterval(),
-                    TimeUnit.SECONDS);
+            logger.info("Scheduling clock to happen every {} seconds", this.config.clockInterval());
+            eventLoop.scheduleWithFixedDelay(this.clock, this.config.clockInterval(),
+                    this.config.clockInterval(), TimeUnit.SECONDS);
         }
     }
 
