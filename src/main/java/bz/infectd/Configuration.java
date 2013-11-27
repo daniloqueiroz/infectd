@@ -7,6 +7,11 @@ import static java.lang.ClassLoader.getSystemResourceAsStream;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.Inet4Address;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.util.Enumeration;
 import java.util.Properties;
 
 /**
@@ -79,8 +84,51 @@ public class Configuration {
     public int minimunPropagationFactor() {
         return parseInt(this.properties.getProperty("gossip.min_propagation_factor"));
     }
-    
+
     public float propagationFactor() {
         return parseFloat(this.properties.getProperty("gossip.propagation_factor"));
+    }
+
+    public String hostname() {
+        String hostname = this.properties.getProperty("network.hostname");
+        if (hostname == null) {
+            hostname = getIPAddress();
+        }
+        return hostname;
+    }
+
+    public void hostname(String hostname) {
+        this.properties.setProperty("network.hostname", hostname);
+    }
+
+    private static String getIPAddress() {
+        String address = null;
+        try {
+            address = findInterface();
+            for (int i = 0; i < 3 && address == null; i++) {
+                Thread.sleep(500);
+                address = findInterface();
+            }
+        } catch (SocketException | InterruptedException e) {
+            // ignore
+        }
+        return (address != null) ? address : "127.0.0.1";
+    }
+
+    private static String findInterface() throws SocketException {
+        Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
+        while (interfaces.hasMoreElements()) {
+            NetworkInterface netIF = interfaces.nextElement();
+            if (!netIF.isLoopback() && netIF.isUp()) {
+                Enumeration<InetAddress> addresses = netIF.getInetAddresses();
+                while (addresses.hasMoreElements()) {
+                    InetAddress address = addresses.nextElement();
+                    if (address instanceof Inet4Address) {
+                        return address.getHostAddress();
+                    }
+                }
+            }
+        }
+        return null;
     }
 }
