@@ -38,13 +38,19 @@ public class PropagationAgent {
 
     protected void infect(List<ExtendedHeartbeat> toInfect) {
         for (Heartbeat member : toInfect) {
-            Client client = new Client(member.address(), member.port());
-            for (Entry<?> entry : this.entries) {
-                try {
-                    client.send(createMessage(entry.unwrap()));
-                } catch (InterruptedException iex) {
-                    LOG.error("Error propagating message", iex);
-                }
+            if (!CONFIG.hostname().equals(member.address())) {
+                sendEntries(member);
+            }
+        }
+    }
+
+    private void sendEntries(Heartbeat member) {
+        Client client = new Client(member.address(), member.port());
+        for (Entry<?> entry : this.entries) {
+            try {
+                client.send(createMessage(entry.unwrap()));
+            } catch (InterruptedException iex) {
+                LOG.error("Error propagating message", iex);
             }
         }
     }
