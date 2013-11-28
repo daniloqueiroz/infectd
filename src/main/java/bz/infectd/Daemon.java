@@ -13,7 +13,7 @@ import bz.infectd.communication.gossip.udp.Client;
 import bz.infectd.communication.gossip.udp.Server;
 import bz.infectd.core.Clock;
 import bz.infectd.core.EntriesProcessor;
-import bz.infectd.core.GossipToEntryAdapter;
+import bz.infectd.journaling.GossipToEntryAdapter;
 import bz.infectd.journaling.Journal;
 import bz.infectd.membership.Heartbeat;
 import bz.infectd.membership.HeartbeatMonitor;

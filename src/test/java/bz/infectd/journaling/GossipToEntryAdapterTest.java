@@ -1,4 +1,4 @@
-package bz.infectd.core;
+package bz.infectd.journaling;
 
 import static bz.infectd.communication.gossip.MessageFactory.createMessage;
 import static org.easymock.EasyMock.eq;
@@ -10,8 +10,8 @@ import org.junit.Test;
 
 import bz.infectd.communication.gossip.GossipHandler;
 import bz.infectd.communication.gossip.protocol.Messages.Gossip;
-import bz.infectd.core.GossipToEntryAdapter;
 import bz.infectd.journaling.Entry;
+import bz.infectd.journaling.GossipToEntryAdapter;
 import bz.infectd.journaling.Journal;
 import bz.infectd.membership.Heartbeat;
 

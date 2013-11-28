@@ -1,4 +1,4 @@
-package bz.infectd.core;
+package bz.infectd.journaling;
 
 import static bz.infectd.journaling.Entry.Builder.createEntry;
 import static org.slf4j.LoggerFactory.getLogger;
@@ -8,8 +8,7 @@ import org.slf4j.Logger;
 import bz.infectd.communication.gossip.GossipHandler;
 import bz.infectd.communication.gossip.protocol.Messages.Gossip;
 import bz.infectd.communication.gossip.protocol.Messages.Gossip.Type;
-import bz.infectd.journaling.Entry;
-import bz.infectd.journaling.Journal;
+import bz.infectd.core.IllegalMessageException;
 import bz.infectd.membership.Heartbeat;
 
 /**
