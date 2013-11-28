@@ -63,12 +63,11 @@ public class Client {
         Bootstrap bootstrap = new Bootstrap();
         bootstrap.group(ioLoop()).channel(NioDatagramChannel.class)
                 .option(ChannelOption.SO_BROADCAST, this.isBroadcast)
-                .handler(new LoggingHandler(Client.class, LogLevel.INFO));
+                .handler(new LoggingHandler(Client.class, LogLevel.DEBUG));
 
-        logger.debug("Trying to send {} to {}", message, this.address);
         Channel ch = bootstrap.bind(0).sync().channel();
         ch.writeAndFlush(gossipToDatagram(message, this.address));
-        logger.info("Message sent to {}: {}", this.address, message);
+        logger.info("Message sent to {}: {}", this.address, message.getType());
         ch.close();
     }
 
