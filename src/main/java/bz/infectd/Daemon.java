@@ -2,11 +2,8 @@ package bz.infectd;
 
 import static bz.infectd.Configuration.getConfiguration;
 import static bz.infectd.communication.gossip.MessageFactory.createMessage;
-import static bz.infectd.core.EventLoopWrapper.systemEventLoop;
+import static bz.infectd.core.EventLoopWrapper.scheduleRecurrentCommand;
 import static org.slf4j.LoggerFactory.getLogger;
-import io.netty.channel.EventLoopGroup;
-
-import java.util.concurrent.TimeUnit;
 
 import org.slf4j.Logger;
 
@@ -79,10 +76,8 @@ public class Daemon {
     private synchronized void setupClock() {
         if (this.clock == null) {
             this.clock = new Clock(this.journal, this.monitor);
-            EventLoopGroup eventLoop = systemEventLoop();
             logger.info("Scheduling clock to happen every {} seconds", this.config.clockInterval());
-            eventLoop.scheduleWithFixedDelay(this.clock, this.config.clockInterval(),
-                    this.config.clockInterval(), TimeUnit.SECONDS);
+            scheduleRecurrentCommand(this.clock, this.config.clockInterval());
         }
     }
 

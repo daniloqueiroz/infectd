@@ -1,7 +1,7 @@
 package bz.infectd.communication.gossip.udp;
 
 import static bz.infectd.communication.gossip.udp.MessagesTranslation.datagramToGossip;
-import static bz.infectd.core.EventLoopWrapper.systemEventLoop;
+import static bz.infectd.core.EventLoopWrapper.ioLoop;
 import static org.slf4j.LoggerFactory.getLogger;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelHandlerContext;
@@ -38,17 +38,22 @@ public class Server extends SimpleChannelInboundHandler<DatagramPacket> {
 
     /**
      * Makes the server start listen to the incoming PORT
-     * @throws InterruptedException 
+     * 
+     * @throws InterruptedException
      */
     public void listen() throws InterruptedException {
         Bootstrap bootstrap = new Bootstrap();
-        bootstrap.group(systemEventLoop()).channel(NioDatagramChannel.class).handler(this);
+        bootstrap.group(ioLoop()).channel(NioDatagramChannel.class).handler(this);
         logger.info("UDP server listen to port {}", this.port);
         bootstrap.bind(this.port).sync().channel().closeFuture();
     }
 
-    /* (non-Javadoc)
-     * @see io.netty.channel.SimpleChannelInboundHandler#channelRead0(io.netty.channel.ChannelHandlerContext, java.lang.Object)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * io.netty.channel.SimpleChannelInboundHandler#channelRead0(io.netty.channel
+     * .ChannelHandlerContext, java.lang.Object)
      */
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, DatagramPacket packet) throws Exception {
@@ -75,6 +80,6 @@ public class Server extends SimpleChannelInboundHandler<DatagramPacket> {
                 logger.info("Message received: {}", message);
             }
         }).listen();
-        systemEventLoop().awaitTermination(5, TimeUnit.MINUTES);
+        ioLoop().awaitTermination(5, TimeUnit.MINUTES);
     }
 }

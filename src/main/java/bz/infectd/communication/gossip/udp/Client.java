@@ -1,7 +1,7 @@
 package bz.infectd.communication.gossip.udp;
 
 import static bz.infectd.communication.gossip.udp.MessagesTranslation.gossipToDatagram;
-import static bz.infectd.core.EventLoopWrapper.clientEventLoop;
+import static bz.infectd.core.EventLoopWrapper.ioLoop;
 import static org.slf4j.LoggerFactory.getLogger;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
@@ -61,7 +61,7 @@ public class Client {
      */
     public void send(Gossip message) throws InterruptedException {
         Bootstrap bootstrap = new Bootstrap();
-        bootstrap.group(clientEventLoop()).channel(NioDatagramChannel.class)
+        bootstrap.group(ioLoop()).channel(NioDatagramChannel.class)
                 .option(ChannelOption.SO_BROADCAST, this.isBroadcast)
                 .handler(new LoggingHandler(Client.class, LogLevel.INFO));
 
