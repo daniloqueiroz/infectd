@@ -61,6 +61,10 @@ run {
     if(project.hasProperty('args')){
         args project.args.split('\\s+')
     }
+    if(project.hasProperty('debug')){
+        jvmArgs "-Dinfectd.debug=" + project.debug
+    }
+    
 }
 
 test { 
