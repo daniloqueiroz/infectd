@@ -36,6 +36,10 @@ public class Clock implements Runnable {
 
     @Override
     public void run() {
-        this.tick();
+        try {
+            this.tick();
+        } catch (Exception t) {
+            logger.error("Error ticking the clock", t);
+        }
     }
 }

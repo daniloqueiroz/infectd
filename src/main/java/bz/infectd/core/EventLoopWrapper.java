@@ -12,10 +12,16 @@ import io.netty.channel.nio.NioEventLoopGroup;
  */
 public class EventLoopWrapper {
 
-    private static final EventLoopGroup loop = new NioEventLoopGroup(getConfiguration()
+    private static final EventLoopGroup eventLoop = new NioEventLoopGroup(getConfiguration()
+            .threadsCount());
+    private static final EventLoopGroup outputLoop = new NioEventLoopGroup(getConfiguration()
             .threadsCount());
 
     public static EventLoopGroup systemEventLoop() {
-        return loop;
+        return eventLoop;
+    }
+    
+    public static EventLoopGroup clientEventLoop() {
+        return outputLoop;
     }
 }
