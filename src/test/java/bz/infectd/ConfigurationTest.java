@@ -1,6 +1,10 @@
 package bz.infectd;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -29,7 +33,7 @@ public class ConfigurationTest {
 
     @Test
     public void getsDefaultThreads() {
-        assertEquals(1, this.conf.threadsCount());
+        assertEquals(1, this.conf.ioThreadsCount());
     }
 
     @Test
@@ -39,7 +43,14 @@ public class ConfigurationTest {
 
     @Test
     public void getsDefaultDebugMode() {
-        assertEquals(true, this.conf.debugMode());
+        assertTrue(this.conf.debugMode());
+    }
+
+    @Test
+    public void getsDebugModeFromSystem() {
+        assertTrue(this.conf.debugMode());
+        System.setProperty("infectd.debug", "False");
+        assertFalse(this.conf.debugMode());
     }
 
     @Test

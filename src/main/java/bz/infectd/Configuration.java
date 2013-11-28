@@ -1,9 +1,9 @@
 package bz.infectd;
 
-import static java.lang.Float.parseFloat;
-import static java.lang.Integer.parseInt;
 import static java.lang.Boolean.parseBoolean;
 import static java.lang.ClassLoader.getSystemResourceAsStream;
+import static java.lang.Float.parseFloat;
+import static java.lang.Integer.parseInt;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -47,50 +47,18 @@ public class Configuration {
      * @return The network port to be used
      */
     public int networkPort() {
-        return parseInt(this.properties.getProperty("network.port"));
-    }
-
-    /**
-     * @return The interval between clock ticks - in seconds
-     */
-    public int clockInterval() {
-        return parseInt(this.properties.getProperty("clock.interval"));
+        return parseInt(this.properties.getProperty("infectd.network.port"));
     }
 
     /**
      * @return The number of threads to be used by the event loop
      */
-    public int threadsCount() {
-        return parseInt(this.properties.getProperty("core.threads"));
-    }
-
-    /**
-     * @return Number of rounds before a member be considered dead
-     */
-    public int roundsCount() {
-        return parseInt(this.properties.getProperty("membership.rounds_count"));
-    }
-
-    /**
-     * @return <code>true</code> if on debug mode, <code>false</code> otherwise.
-     */
-    public boolean debugMode() {
-        return parseBoolean(this.properties.getProperty("debug"));
-    }
-
-    /**
-     * @return
-     */
-    public int minimunPropagationFactor() {
-        return parseInt(this.properties.getProperty("gossip.min_propagation_factor"));
-    }
-
-    public float propagationFactor() {
-        return parseFloat(this.properties.getProperty("gossip.propagation_factor"));
+    public int ioThreadsCount() {
+        return parseInt(this.properties.getProperty("infectd.network.threads"));
     }
 
     public String hostname() {
-        String hostname = this.properties.getProperty("network.hostname");
+        String hostname = this.properties.getProperty("infectd.network.hostname");
         if (hostname == null) {
             hostname = getIPAddress();
         }
@@ -98,7 +66,41 @@ public class Configuration {
     }
 
     public void hostname(String hostname) {
-        this.properties.setProperty("network.hostname", hostname);
+        this.properties.setProperty("infectd.network.hostname", hostname);
+    }
+
+    /**
+     * @return The interval between clock ticks - in seconds
+     */
+    public int clockInterval() {
+        return parseInt(this.properties.getProperty("infectd.clock.interval"));
+    }
+
+    /**
+     * @return Number of rounds before a member be considered dead
+     */
+    public int roundsCount() {
+        return parseInt(this.properties.getProperty("infectd.rounds_to_death"));
+    }
+
+    /**
+     * @return <code>true</code> if on debug mode, <code>false</code> otherwise.
+     */
+    public boolean debugMode() {
+        String defaultValue = this.properties.getProperty("infectd.debug");
+        String debugMode = System.getProperty("infectd.debug", defaultValue);
+        return parseBoolean(debugMode);
+    }
+
+    /**
+     * @return
+     */
+    public int minimunPropagationFactor() {
+        return parseInt(this.properties.getProperty("infectd.min_propagation_factor"));
+    }
+
+    public float propagationFactor() {
+        return parseFloat(this.properties.getProperty("infectd.propagation_factor"));
     }
 
     private static String getIPAddress() {

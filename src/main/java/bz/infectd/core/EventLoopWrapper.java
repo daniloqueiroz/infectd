@@ -18,7 +18,7 @@ public class EventLoopWrapper {
 
     private static final ScheduledExecutorService eventLoop = new ScheduledThreadPoolExecutor(1);
     private static final EventLoopGroup ioLoop = new NioEventLoopGroup(getConfiguration()
-            .threadsCount());
+            .ioThreadsCount());
 
     /**
      * Schedules the given command to execute recurrently with a fixed delay in
