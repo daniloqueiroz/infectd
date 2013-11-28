@@ -1,3 +1,16 @@
+# Next steps
+* CLI
+* Events
+* Event Handlers
+  * DSL for event handlers
+* Initial Sync over TCP
+* HMAC checking of messages
+* Key Value short storage
+  * Published using Gossip
+  * Watch key changed (event handler)
+* Parameters parsing (for config)
+
+# Implemented
 * Basic Membership
   * Heartbeat using Lamport Clocks
   * Heartbeat monitor
@@ -6,17 +19,6 @@
 * UDP Communication
   * ProtocolBuffers
   * Minimal gossip protocol
-  * HMAC checking of messages
 * Logging
-* Initial Sync
-  * Over TCP
-  * ProtocolBuffers
-* Key Value short storage
-  * Published using Gossip
-  * Watch key changed (event handler)
-* Events
-* CLI
-* Event Handlers
-  * DSL for event handlers
-* Configuration
+* Minimal Configuration
 
