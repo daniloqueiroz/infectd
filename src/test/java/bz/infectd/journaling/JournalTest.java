@@ -6,7 +6,6 @@ import static org.powermock.api.easymock.PowerMock.createMock;
 import static org.powermock.api.easymock.PowerMock.replayAll;
 import static org.powermock.api.easymock.PowerMock.verifyAll;
 
-import java.util.Collection;
 import java.util.Iterator;
 
 import org.junit.Before;
@@ -52,9 +51,8 @@ public class JournalTest {
         }
         this.fanout.process(this.journal.entries());
         replayAll();
-        Collection<Entry<?>> synced = this.journal.sync();
+        this.journal.sync();
         verifyAll();
-        assertEquals(5, synced.size());
         assertEquals(0, this.journal.entries().size());
     }
 }

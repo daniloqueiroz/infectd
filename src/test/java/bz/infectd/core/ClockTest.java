@@ -12,7 +12,6 @@ import java.util.LinkedList;
 
 import org.junit.Test;
 
-import bz.infectd.core.Clock;
 import bz.infectd.journaling.Entry;
 import bz.infectd.journaling.Journal;
 import bz.infectd.membership.Heartbeat;
@@ -35,7 +34,7 @@ public class ClockTest {
         expect(monitor.heartbeat()).andReturn(hb);
 
         journal.add(eq(entry));
-        expect(journal.sync()).andReturn(entries);
+        journal.sync();
         replayAll();
 
         clock.tick();

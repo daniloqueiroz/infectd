@@ -46,14 +46,11 @@ public class Journal {
      * By sync it means that all the entries are sent to the
      * {@link EntriesProcessor} that is responsible to update the respective
      * data for each entry.
-     * 
-     * @return
      */
-    public Collection<Entry<?>> sync() {
+    public void sync() {
         logger.debug("Performing journaling sync");
         Collection<Entry<?>> toSync = this.rotateEntries();
         this.fanout.process(toSync);
-        return toSync;
     }
 
     /**
