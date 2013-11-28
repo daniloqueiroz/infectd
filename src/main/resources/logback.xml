@@ -11,6 +11,14 @@
         <!-- https://github.com/logstash/logstash-logback-encoder -->
         <encoder class="net.logstash.logback.encoder.LogstashEncoder" />
     </appender>
+    <appender name="file" class="ch.qos.logback.core.FileAppender">
+        <file>infectd.log</file>
+        <append>true</append>
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+    
 
   <!-- Loggers -->
     <if condition='property("debug").equalsIgnoreCase("true")'>
@@ -26,10 +34,10 @@
         <!-- NORMAL MODE -->
         <else>
             <logger name="io.netty" level="WARN" additivity="false">
-                <appender-ref ref="general" />
+                <appender-ref ref="file" />
             </logger>
             <root level="INFO">
-                <appender-ref ref="logstash" />
+                <appender-ref ref="file" />
             </root>
         </else>
     </if>
