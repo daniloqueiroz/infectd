@@ -58,6 +58,17 @@ public class MembershipBoardTest {
     }
 
     @Test
+    public void updatesHeartbeatsReturnModifieds() {
+        Heartbeat hb1 = new Heartbeat("some", 7);
+        Heartbeat hb2 = new Heartbeat("other", 7);
+        Collection<Heartbeat> modified = this.board.updateHeartbeats(asList(hb1, hb2));
+        assertEquals(2, modified.size());
+        hb1.clock(2);
+        modified = this.board.updateHeartbeats(asList(hb1, hb2));
+        assertEquals(1, modified.size());
+    }
+
+    @Test
     public void updatesRemoveDeadNodes() {
         Heartbeat hb1 = new Heartbeat("some", 7);
         Heartbeat hb2 = new Heartbeat("other", 7);

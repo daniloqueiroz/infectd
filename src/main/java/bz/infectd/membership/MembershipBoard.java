@@ -33,17 +33,23 @@ public class MembershipBoard {
 
     /**
      * Updates the given heartbeats.
+     * 
+     * @return The heartbeats that triggered modifications
      */
-    public void updateHeartbeats(Collection<Heartbeat> heartbeats) {
+    public Collection<Heartbeat> updateHeartbeats(Collection<Heartbeat> heartbeats) {
         logger.info("Updating {} heartbeats", heartbeats.size());
+        Collection<Heartbeat> modified = new LinkedList<>();
         for (Heartbeat heartbeat : heartbeats) {
             String address = heartbeat.address();
             int port = heartbeat.port();
             int clock = heartbeat.clock();
-            this.updateHearbeat(address, port, clock);
+            if (this.updateHearbeat(address, port, clock)) {
+                modified.add(heartbeat);
+            }
         }
         Collection<String> toBeRemoved = this.sanitizeHeartbeats();
         this.removeDeads(toBeRemoved);
+        return modified;
     }
 
     /**
@@ -51,17 +57,20 @@ public class MembershipBoard {
      * 
      * When updating new heartbeats it fires a NewMemberEvent
      */
-    private void updateHearbeat(String address, int port, int clock) {
+    private boolean updateHearbeat(String address, int port, int clock) {
+        boolean modified = true;
         String key = createHeartbeatKey(address, port);
         if (this.heartbeats.containsKey(key)) {
             ExtendedHeartbeat hb = this.heartbeats.get(key);
             hb.clock(clock);
+            modified = hb.hasChanged();
         } else {
             ExtendedHeartbeat hb = new ExtendedHeartbeat(address, port, clock);
             this.heartbeats.put(key, hb);
             // TODO notify new member joined
-            logger.debug("Node {} has joined - adding heartbeat", key);
+            logger.info("Node {} has joined - adding heartbeat", key);
         }
+        return modified;
     }
 
     /**
@@ -100,7 +109,7 @@ public class MembershipBoard {
         for (String nodeKey : toRemove) {
             this.heartbeats.remove(nodeKey);
             // TODO notify member left
-            logger.debug("Node {} dead - removing heartbeat", nodeKey);
+            logger.info("Node {} dead - removing heartbeat", nodeKey);
         }
     }
 
