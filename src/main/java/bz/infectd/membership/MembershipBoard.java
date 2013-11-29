@@ -40,10 +40,7 @@ public class MembershipBoard {
         logger.info("Updating {} heartbeats", heartbeats.size());
         Collection<Heartbeat> modified = new LinkedList<>();
         for (Heartbeat heartbeat : heartbeats) {
-            String address = heartbeat.address();
-            int port = heartbeat.port();
-            int clock = heartbeat.clock();
-            if (this.updateHearbeat(address, port, clock)) {
+            if (this.updateHearbeat(heartbeat)) {
                 modified.add(heartbeat);
             }
         }
@@ -57,16 +54,15 @@ public class MembershipBoard {
      * 
      * When updating new heartbeats it fires a NewMemberEvent
      */
-    private boolean updateHearbeat(String address, int port, int clock) {
+    private boolean updateHearbeat(Heartbeat heartbeat) {
         boolean modified = true;
-        String key = createHeartbeatKey(address, port);
+        String key = createHeartbeatKey(heartbeat.address(), heartbeat.port());
         if (this.heartbeats.containsKey(key)) {
-            Heartbeat hb = this.heartbeats.get(key);
-            hb.clock(clock);
-            modified = hb.hasChanged();
+            Heartbeat originalHeartbeat = this.heartbeats.get(key);
+            originalHeartbeat.clock(heartbeat.clock());
+            modified = originalHeartbeat.hasChanged();
         } else {
-            Heartbeat hb = new Heartbeat(address, port, clock);
-            this.heartbeats.put(key, hb);
+            this.heartbeats.put(key, heartbeat);
             // TODO notify new member joined
             logger.info("Node {} has joined - adding heartbeat", key);
         }
@@ -75,9 +71,9 @@ public class MembershipBoard {
 
     /**
      * This method checks which heartbeats hadn't been updated since last
-     * 'sanitization' and mark them as missing. The {@link Heartbeat}
-     * marked as missing for more than
-     * {@link MembershipBoard#MISSING_ROUNDS_TO_DEATH} are returned by this
+     * 'sanitization' and mark them as missing. The {@link Heartbeat} marked as
+     * missing for more than {@link MembershipBoard#MISSING_ROUNDS_TO_DEATH} are
+     * returned by this
      * method.
      * 
      * @return The {@link String} keys for the heartbeats marked as missing for
