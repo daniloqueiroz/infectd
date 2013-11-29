@@ -12,7 +12,6 @@ import java.util.LinkedList;
 import org.junit.Test;
 
 import bz.infectd.journaling.Entry;
-import bz.infectd.membership.ExtendedHeartbeat;
 import bz.infectd.membership.Heartbeat;
 import bz.infectd.membership.MembershipBoard;
 
@@ -31,7 +30,7 @@ public class EntriesProcessorTest {
             entries.add(createEntry(hb));
         }
         expect(board.updateHeartbeats(heartbeats)).andReturn(heartbeats);
-        expect(board.heartbeats()).andReturn(new LinkedList<ExtendedHeartbeat>());
+        expect(board.heartbeats()).andReturn(new LinkedList<Heartbeat>());
         replayAll();
         adapter.process(entries);
         verifyAll();

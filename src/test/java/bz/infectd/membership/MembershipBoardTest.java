@@ -25,7 +25,7 @@ public class MembershipBoardTest {
         Heartbeat hb1 = new Heartbeat("some", 7);
         Heartbeat hb2 = new Heartbeat("other", 7);
         this.board.updateHeartbeats(asList(hb1, hb2));
-        Collection<ExtendedHeartbeat> heartbeats = this.board.heartbeats();
+        Collection<Heartbeat> heartbeats = this.board.heartbeats();
         assertEquals(2, heartbeats.size());
         List<String> names = new LinkedList<>();
         for (Heartbeat hb : heartbeats) {
@@ -44,8 +44,8 @@ public class MembershipBoardTest {
         this.board.updateHeartbeats(asList(hb1));
         hb1.clock(3);
         this.board.updateHeartbeats(asList(hb1));
-        Collection<ExtendedHeartbeat> heartbeats = this.board.heartbeats();
-        for (ExtendedHeartbeat hb : heartbeats) {
+        Collection<Heartbeat> heartbeats = this.board.heartbeats();
+        for (Heartbeat hb : heartbeats) {
             switch (hb.address()) {
             case "some":
                 assertEquals(0, hb.missingRounds());

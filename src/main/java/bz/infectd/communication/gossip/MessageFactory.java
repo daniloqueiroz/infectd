@@ -49,7 +49,8 @@ public class MessageFactory {
      * @return a {@link GossipMessage}
      * @throws ClassCastException
      */
-    public static Gossip createMessage(Object obj) {
+    public static Gossip createMessage(Propagable obj) {
+        // TODO handle this better
         return createMessage((Heartbeat) obj);
     }
 }

@@ -13,30 +13,28 @@ import org.slf4j.Logger;
 
 import bz.infectd.Configuration;
 import bz.infectd.communication.gossip.udp.Client;
-import bz.infectd.journaling.Entry;
-import bz.infectd.membership.ExtendedHeartbeat;
 import bz.infectd.membership.Heartbeat;
 
 /**
  * @author Danilo Queiroz <dpenna.queiroz@gmail.com>
  */
-public class PropagationAgent {
+public class PropagationAgent<T extends Propagable> {
 
     private static final Logger LOG = getLogger(PropagationAgent.class);
     private static final Configuration CONFIG = getConfiguration();
-    private Collection<Entry<?>> entries;
-    private List<ExtendedHeartbeat> heartbeats;
+    private Collection<T> entries;
+    private List<Heartbeat> heartbeats;
 
-    public PropagationAgent(Collection<Entry<?>> entries, List<ExtendedHeartbeat> heartbeats) {
-        this.entries = entries;
+    public PropagationAgent(Collection<T> entries, List<Heartbeat> heartbeats) {
         this.heartbeats = heartbeats;
+        this.entries = entries;
     }
 
     public void propagate() {
         this.infect(this.selectMembers());
     }
 
-    protected void infect(List<ExtendedHeartbeat> toInfect) {
+    protected void infect(List<Heartbeat> toInfect) {
         for (Heartbeat member : toInfect) {
             if (!CONFIG.hostname().equals(member.address())) {
                 sendEntries(member);
@@ -45,10 +43,12 @@ public class PropagationAgent {
     }
 
     private void sendEntries(Heartbeat member) {
+        LOG.info("Propagating {} entries to {}:{}", entries.size(), member.address(),
+                member.port());
         Client client = new Client(member.address(), member.port());
-        for (Entry<?> entry : this.entries) {
+        for (Propagable toPropagate : this.entries) {
             try {
-                client.send(createMessage(entry.unwrap()));
+                client.send(createMessage(toPropagate));
             } catch (InterruptedException iex) {
                 LOG.error("Error propagating message", iex);
             }
@@ -60,7 +60,7 @@ public class PropagationAgent {
      * selected members list it's max(X,Y*heartbeats.size()) where Y its a value
      * between 0 and 1;
      */
-    protected List<ExtendedHeartbeat> selectMembers() {
+    protected List<Heartbeat> selectMembers() {
         int amountByFactor = (int) (CONFIG.propagationFactor() * this.heartbeats.size());
         int amountToSelect = max(CONFIG.minimunPropagationFactor(), amountByFactor);
         if (this.heartbeats.size() <= amountToSelect) {

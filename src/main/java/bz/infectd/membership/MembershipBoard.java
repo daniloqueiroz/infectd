@@ -22,12 +22,12 @@ import org.slf4j.Logger;
 public class MembershipBoard {
 
     private static final Logger logger = getLogger(MembershipBoard.class);
-    private Map<String, ExtendedHeartbeat> heartbeats = new HashMap<>();
+    private Map<String, Heartbeat> heartbeats = new HashMap<>();
 
     /**
      * Gets all the heartbeats.
      */
-    public List<ExtendedHeartbeat> heartbeats() {
+    public List<Heartbeat> heartbeats() {
         return new ArrayList<>(this.heartbeats.values());
     }
 
@@ -61,11 +61,11 @@ public class MembershipBoard {
         boolean modified = true;
         String key = createHeartbeatKey(address, port);
         if (this.heartbeats.containsKey(key)) {
-            ExtendedHeartbeat hb = this.heartbeats.get(key);
+            Heartbeat hb = this.heartbeats.get(key);
             hb.clock(clock);
             modified = hb.hasChanged();
         } else {
-            ExtendedHeartbeat hb = new ExtendedHeartbeat(address, port, clock);
+            Heartbeat hb = new Heartbeat(address, port, clock);
             this.heartbeats.put(key, hb);
             // TODO notify new member joined
             logger.info("Node {} has joined - adding heartbeat", key);
@@ -75,7 +75,7 @@ public class MembershipBoard {
 
     /**
      * This method checks which heartbeats hadn't been updated since last
-     * 'sanitization' and mark them as missing. The {@link ExtendedHeartbeat}
+     * 'sanitization' and mark them as missing. The {@link Heartbeat}
      * marked as missing for more than
      * {@link MembershipBoard#MISSING_ROUNDS_TO_DEATH} are returned by this
      * method.
@@ -85,7 +85,7 @@ public class MembershipBoard {
      */
     private Collection<String> sanitizeHeartbeats() {
         Collection<String> toBeRemove = new LinkedList<>();
-        for (ExtendedHeartbeat heartbeat : this.heartbeats.values()) {
+        for (Heartbeat heartbeat : this.heartbeats.values()) {
             if (heartbeat.hasChanged()) {
                 heartbeat.markNotChanged();
             } else {

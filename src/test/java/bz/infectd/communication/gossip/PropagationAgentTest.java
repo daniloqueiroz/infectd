@@ -26,8 +26,6 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 import bz.infectd.Configuration;
 import bz.infectd.communication.gossip.udp.Client;
-import bz.infectd.journaling.Entry;
-import bz.infectd.membership.ExtendedHeartbeat;
 import bz.infectd.membership.Heartbeat;
 
 /**
@@ -50,9 +48,9 @@ public class PropagationAgentTest {
 
     @Test
     public void propagatesSelectsAndInfects() throws Exception {
-        PropagationAgent agent = createPartialMock(PropagationAgent.class, new String[] { "infect",
+        PropagationAgent<?> agent = createPartialMock(PropagationAgent.class, new String[] { "infect",
                 "selectMembers" }, null, null);
-        List<ExtendedHeartbeat> selected = new ArrayList<>();
+        List<Heartbeat> selected = new ArrayList<>();
         expect(agent.selectMembers()).andReturn(selected);
         agent.infect(selected);
         replayAll();
@@ -63,13 +61,13 @@ public class PropagationAgentTest {
     @Test
     public void infectsOneEntryToOneMember() throws Exception {
         Heartbeat entryHb = new Heartbeat("192.168.1.2", this.port);
-        Collection<Entry<?>> entries = new LinkedList<>();
-        entries.add(Entry.Builder.createEntry(entryHb));
-        PropagationAgent agent = new PropagationAgent(entries, null);
+        Collection<Heartbeat> entries = new LinkedList<>();
+        entries.add(entryHb);
+        PropagationAgent<Heartbeat> agent = new PropagationAgent<>(entries, null);
         expectNew(Client.class, "127.0.0.1", this.port).andReturn(this.agentMock);
         this.agentMock.send(eq(createMessage(entryHb)));
         replayAll();
-        List<ExtendedHeartbeat> beats = Arrays.asList(new ExtendedHeartbeat("127.0.0.1", this.port,
+        List<Heartbeat> beats = Arrays.asList(new Heartbeat("127.0.0.1", this.port,
                 1));
         agent.infect(beats);
         verifyAll();
@@ -77,50 +75,50 @@ public class PropagationAgentTest {
 
     @Test
     public void selectsAllMembers() throws Exception {
-        List<ExtendedHeartbeat> beats = new LinkedList<>();
+        List<Heartbeat> beats = new LinkedList<>();
         for (int i = 0; i < this.config.minimunPropagationFactor(); i++) {
-            beats.add(new ExtendedHeartbeat("127.0.0.1", ++this.port, 1));
+            beats.add(new Heartbeat("127.0.0.1", ++this.port, 1));
         }
-        PropagationAgent agent = new PropagationAgent(null, beats);
-        Collection<ExtendedHeartbeat> selected = agent.selectMembers();
+        PropagationAgent<?> agent = new PropagationAgent<>(null, beats);
+        Collection<Heartbeat> selected = agent.selectMembers();
         assertEquals(this.config.minimunPropagationFactor(), selected.size());
     }
 
     @Test
     public void selectsMinimumAmountOfMembers() throws Exception {
-        List<ExtendedHeartbeat> beats = new LinkedList<>();
+        List<Heartbeat> beats = new LinkedList<>();
         int port = 7770;
         for (int i = 0; i <= this.config.minimunPropagationFactor(); i++) {
-            beats.add(new ExtendedHeartbeat("127.0.0.1", ++port, 1));
+            beats.add(new Heartbeat("127.0.0.1", ++port, 1));
         }
-        PropagationAgent agent = new PropagationAgent(null, beats);
+        PropagationAgent<?> agent = new PropagationAgent<>(null, beats);
         assertEquals(this.config.minimunPropagationFactor(), agent.selectMembers().size());
     }
 
     @Test
     public void selectsAmountOfMembersFromPropagationFactor() throws Exception {
-        List<ExtendedHeartbeat> beats = new LinkedList<>();
+        List<Heartbeat> beats = new LinkedList<>();
         int port = 7770;
         for (int i = 0; i < 100; i++) {
-            beats.add(new ExtendedHeartbeat("127.0.0.1", ++port, 1));
+            beats.add(new Heartbeat("127.0.0.1", ++port, 1));
         }
         int expectedNumberOfElements = (int) (beats.size() * this.config.propagationFactor());
-        PropagationAgent agent = new PropagationAgent(null, beats);
+        PropagationAgent<?> agent = new PropagationAgent<>(null, beats);
         assertEquals(expectedNumberOfElements, agent.selectMembers().size());
     }
 
     @Test
     @SuppressWarnings("unchecked")
     public void selectsRandomElements() throws Exception {
-        ArrayList<ExtendedHeartbeat> beats = new ArrayList<>();
+        ArrayList<Heartbeat> beats = new ArrayList<>();
         int port = 7770;
         for (int i = 0; i < 100; i++) {
-            beats.add(new ExtendedHeartbeat("127.0.0.1", ++port, 0));
+            beats.add(new Heartbeat("127.0.0.1", ++port, 0));
         }
-        Collection<? extends Heartbeat> elements1 = new PropagationAgent(null,
-                (List<ExtendedHeartbeat>) beats.clone()).selectMembers();
-        Collection<? extends Heartbeat> elements2 = new PropagationAgent(null,
-                (List<ExtendedHeartbeat>) beats.clone()).selectMembers();
+        Collection<? extends Heartbeat> elements1 = new PropagationAgent<>(null,
+                (List<Heartbeat>) beats.clone()).selectMembers();
+        Collection<? extends Heartbeat> elements2 = new PropagationAgent<>(null,
+                (List<Heartbeat>) beats.clone()).selectMembers();
         assertNotEquals(elements1, elements2);
         assertEquals(elements1.size(), elements2.size());
     }

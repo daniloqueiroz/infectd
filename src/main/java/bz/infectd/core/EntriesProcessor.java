@@ -13,7 +13,7 @@ import bz.infectd.membership.Heartbeat;
 import bz.infectd.membership.MembershipBoard;
 
 /**
- * Kill this class?!
+ * Kill this class
  * 
  * @author Danilo Queiroz <dpenna.queiroz@gmail.com>
  */
@@ -33,10 +33,11 @@ public class EntriesProcessor {
             contents.add(entry);
         }
 
-        this.membersBoard.updateHeartbeats(contents.heartbeats);
+        Collection<Heartbeat> toPropagate = this.membersBoard.updateHeartbeats(contents.heartbeats);
 
         // Propagate the entries to the network
-        PropagationAgent agent = new PropagationAgent(entries, this.membersBoard.heartbeats());
+        PropagationAgent<Heartbeat> agent = new PropagationAgent<>(toPropagate,
+                this.membersBoard.heartbeats());
         agent.propagate();
     }
 
