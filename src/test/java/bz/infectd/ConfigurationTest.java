@@ -28,7 +28,7 @@ public class ConfigurationTest {
 
     @Test
     public void getsDefaultInterval() {
-        assertEquals(20, this.conf.clockInterval());
+        assertEquals(5, this.conf.clockInterval());
     }
 
     @Test
@@ -38,7 +38,7 @@ public class ConfigurationTest {
 
     @Test
     public void getsDefaultRoundsCount() {
-        assertEquals(4, this.conf.roundsCount());
+        assertEquals(6, this.conf.roundsCount());
     }
 
     @Test
