@@ -67,7 +67,7 @@ public class Server extends SimpleChannelInboundHandler<DatagramPacket> {
             throws Exception {
         logger.debug("Message received: {}", packet);
         Gossip message = datagramToGossip(packet);
-        this.gossipHandler.addEntry(message);
+        this.gossipHandler.add(message);
     }
 
     /**
@@ -76,7 +76,7 @@ public class Server extends SimpleChannelInboundHandler<DatagramPacket> {
     public static void main(String[] args) throws Exception {
         new Server(7777, new GossipHandler() {
             @Override
-            public void addEntry(Gossip message) {
+            public void add(Gossip message) {
                 logger.info("Message received: {}", message);
             }
         }).listen();

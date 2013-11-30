@@ -22,12 +22,19 @@ public class PropagationAgent<T extends Propagable> {
 
     private static final Logger LOG = getLogger(PropagationAgent.class);
     private static final Configuration CONFIG = getConfiguration();
-    private Collection<T> entries;
-    private List<Heartbeat> heartbeats;
+    private Collection<T> data;
+    private List<Heartbeat> members;
 
-    public PropagationAgent(Collection<T> entries, List<Heartbeat> heartbeats) {
-        this.heartbeats = heartbeats;
-        this.entries = entries;
+    /**
+     * @param data
+     *            The data to be propagate
+     * @param members
+     *            The current list of members to be used to propagate to - the
+     *            propagation agent can use only a subset of this elements.
+     */
+    public PropagationAgent(Collection<T> data, List<Heartbeat> members) {
+        this.members = members;
+        this.data = data;
     }
 
     public void propagate() {
@@ -37,16 +44,16 @@ public class PropagationAgent<T extends Propagable> {
     protected void infect(List<Heartbeat> toInfect) {
         for (Heartbeat member : toInfect) {
             if (!CONFIG.hostname().equals(member.address())) {
-                sendEntries(member);
+                this.sendEntries(member);
             }
         }
     }
 
     private void sendEntries(Heartbeat member) {
-        LOG.info("Propagating {} entries to {}:{}", entries.size(), member.address(),
+        LOG.info("Propagating {} entries to {}:{}", this.data.size(), member.address(),
                 member.port());
         Client client = new Client(member.address(), member.port());
-        for (Propagable toPropagate : this.entries) {
+        for (Propagable toPropagate : this.data) {
             try {
                 client.send(createMessage(toPropagate));
             } catch (InterruptedException iex) {
@@ -61,13 +68,13 @@ public class PropagationAgent<T extends Propagable> {
      * between 0 and 1;
      */
     protected List<Heartbeat> selectMembers() {
-        int amountByFactor = (int) (CONFIG.propagationFactor() * this.heartbeats.size());
+        int amountByFactor = (int) (CONFIG.propagationFactor() * this.members.size());
         int amountToSelect = max(CONFIG.minimunPropagationFactor(), amountByFactor);
-        if (this.heartbeats.size() <= amountToSelect) {
-            return this.heartbeats;
+        if (this.members.size() <= amountToSelect) {
+            return this.members;
         } else {
-            shuffle(this.heartbeats);
-            return this.heartbeats.subList(0, amountToSelect);
+            shuffle(this.members);
+            return this.members.subList(0, amountToSelect);
         }
     }
 }

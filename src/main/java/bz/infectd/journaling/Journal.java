@@ -3,13 +3,14 @@ package bz.infectd.journaling;
 import static org.slf4j.LoggerFactory.getLogger;
 
 import java.util.Collection;
-import java.util.LinkedHashSet;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 import org.slf4j.Logger;
 
-import bz.infectd.core.EntriesProcessor;
+import bz.infectd.communication.gossip.PropagationAgent;
+import bz.infectd.membership.Heartbeat;
+import bz.infectd.membership.MembershipBoard;
 
 /**
  * Keep tracks of all the events received that are pending to process.
@@ -23,18 +24,21 @@ import bz.infectd.core.EntriesProcessor;
 public class Journal {
 
     private static final Logger logger = getLogger(Journal.class);
-    private LinkedHashSet<Entry<?>> entries = new LinkedHashSet<>();
     private Lock monitor = new ReentrantLock();
-    private EntriesProcessor fanout;
+    private MembershipBoard board;
+    protected EntriesCollection entries = new EntriesCollection();
 
-    public Journal(EntriesProcessor fanout) {
-        this.fanout = fanout;
+    /**
+     * @param board
+     */
+    public Journal(MembershipBoard board) {
+        this.board = board;
     }
 
     /**
      * Add a new {@link Entry} to the journal buffer.
      */
-    public void add(Entry<?> entry) {
+    public void add(Heartbeat entry) {
         this.monitor.lock();
         logger.debug("Adding new entry {}", entry);
         this.entries.add(entry);
@@ -49,28 +53,25 @@ public class Journal {
      */
     public void sync() {
         logger.debug("Performing journaling sync");
-        Collection<Entry<?>> toSync = this.rotateEntries();
-        this.fanout.process(toSync);
+        EntriesCollection toSync = this.rotateEntries();
+        this.process(toSync);
+    }
+
+    private void process(EntriesCollection toSync) {
+        Collection<Heartbeat> updated = this.board.updateHeartbeats(toSync.heartbeats());
+        PropagationAgent<Heartbeat> agent = new PropagationAgent<>(updated, this.board.heartbeats());
+        agent.propagate();
     }
 
     /**
      * Return all the entries on the journal buffer and reset the internal
      * Journal buffer.
      */
-    private Collection<Entry<?>> rotateEntries() {
+    private EntriesCollection rotateEntries() {
         this.monitor.lock();
-        Collection<Entry<?>> current = this.entries();
-        this.entries = new LinkedHashSet<>();
+        EntriesCollection current = this.entries;
+        this.entries = new EntriesCollection();
         this.monitor.unlock();
         return current;
-    }
-
-    protected Collection<Entry<?>> entries() {
-        this.monitor.lock();
-        try {
-            return this.entries;
-        } finally {
-            this.monitor.unlock();
-        }
     }
 }

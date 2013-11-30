@@ -1,6 +1,5 @@
 package bz.infectd.core;
 
-import static bz.infectd.journaling.Entry.Builder.createEntry;
 import static org.slf4j.LoggerFactory.getLogger;
 
 import org.slf4j.Logger;
@@ -30,7 +29,7 @@ public class Clock implements Runnable {
         logger.info("Ticking the clock");
         this.monitor.pulse();
         Heartbeat hb = this.monitor.heartbeat();
-        this.journal.add(createEntry(hb));
+        this.journal.add(hb);
         this.journal.sync();
     }
 

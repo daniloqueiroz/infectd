@@ -10,16 +10,13 @@ import org.junit.Test;
 
 import bz.infectd.communication.gossip.GossipHandler;
 import bz.infectd.communication.gossip.protocol.Messages.Gossip;
-import bz.infectd.journaling.Entry;
-import bz.infectd.journaling.GossipToEntryAdapter;
-import bz.infectd.journaling.Journal;
 import bz.infectd.membership.Heartbeat;
 
 /**
  * @author Danilo Queiroz <dpenna.queiroz@gmail.com>
- *
+ * 
  */
-public class GossipToEntryAdapterTest {
+public class GossipJournalAdapterTest {
 
     @Test
     public void addsHeartbeatEntry() {
@@ -27,11 +24,11 @@ public class GossipToEntryAdapterTest {
         hb.clock(5);
         Gossip msg = createMessage(hb);
         Journal journal = createMock(Journal.class);
-        GossipHandler adapter = new GossipToEntryAdapter(journal);
-        journal.add(eq(Entry.Builder.createEntry(hb)));
+        GossipHandler adapter = new GossipJournalAdapter(journal);
+        journal.add(eq(hb));
         replayAll();
-        
-        adapter.addEntry(msg);
+
+        adapter.add(msg);
         verifyAll();
     }
 

@@ -12,8 +12,7 @@ import bz.infectd.communication.gossip.protocol.Messages.Gossip;
 import bz.infectd.communication.gossip.udp.Client;
 import bz.infectd.communication.gossip.udp.Server;
 import bz.infectd.core.Clock;
-import bz.infectd.core.EntriesProcessor;
-import bz.infectd.journaling.GossipToEntryAdapter;
+import bz.infectd.journaling.GossipJournalAdapter;
 import bz.infectd.journaling.Journal;
 import bz.infectd.membership.Heartbeat;
 import bz.infectd.membership.HeartbeatMonitor;
@@ -51,23 +50,22 @@ public class Daemon {
 
     private Journal setupJornal() {
         MembershipBoard board = new MembershipBoard();
-        EntriesProcessor processor = new EntriesProcessor(board);
-        return new Journal(processor);
+        return new Journal(board);
     }
 
     private Server setupServer() {
-        final GossipHandler handler = new GossipToEntryAdapter(this.journal);
+        final GossipHandler handler = new GossipJournalAdapter(this.journal);
         Server udpServer = new Server(this.config.networkPort(), new GossipHandler() {
             private transient boolean hasReceivedFirstMessage = false;
 
             @Override
-            public void addEntry(Gossip message) {
+            public void add(Gossip message) {
                 if (!this.hasReceivedFirstMessage) {
                     // Not thread-safe, but we rely on the setupClock that is
                     this.hasReceivedFirstMessage = true;
                     Daemon.this.setupClock();
                 }
-                handler.addEntry(message);
+                handler.add(message);
             }
         });
         return udpServer;

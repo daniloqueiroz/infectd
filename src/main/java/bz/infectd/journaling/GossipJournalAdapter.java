@@ -1,6 +1,5 @@
 package bz.infectd.journaling;
 
-import static bz.infectd.journaling.Entry.Builder.createEntry;
 import static org.slf4j.LoggerFactory.getLogger;
 
 import org.slf4j.Logger;
@@ -17,30 +16,32 @@ import bz.infectd.membership.Heartbeat;
  * 
  * @author Danilo Queiroz <dpenna.queiroz@gmail.com>
  */
-public class GossipToEntryAdapter implements GossipHandler {
-    private static final Logger logger = getLogger(GossipToEntryAdapter.class);
+public class GossipJournalAdapter implements GossipHandler {
+    private static final Logger logger = getLogger(GossipJournalAdapter.class);
     private Journal journal;
 
-    public GossipToEntryAdapter(Journal journal) {
+    public GossipJournalAdapter(Journal journal) {
         this.journal = journal;
     }
 
-    /* (non-Javadoc)
-     * @see bz.infectd.core.GossipHandler#addEntry(bz.infectd.communication.protocol.gossip.P2PProtocol.Gossip)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * bz.infectd.core.GossipHandler#addEntry(bz.infectd.communication.protocol
+     * .gossip.P2PProtocol.Gossip)
      */
     @Override
-    public void addEntry(Gossip message) {
-        Entry<?> entry;
+    public void add(Gossip message) {
         switch (message.getType().getNumber()) {
         case Type.HEARTBEAT_VALUE:
             Heartbeat hb = this.translate(message.getHeartbeat());
             logger.info("Heartbeart received: {}", hb);
-            entry = createEntry(hb);
+            this.journal.add(hb);
             break;
         default:
             throw new IllegalMessageException();
         }
-        journal.add(entry);
     }
 
     /**
