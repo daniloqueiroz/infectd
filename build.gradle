@@ -21,13 +21,13 @@ apply plugin: 'gradleProtobufPlugin'
 // extra plugins
 apply plugin: 'eclipse'
 apply plugin: 'versions'
+apply plugin:'application'
 // Reports plugins
 apply plugin: 'build-dashboard'
 apply plugin: 'findbugs'
 apply plugin: 'checkstyle'
 apply plugin: 'cobertura'
 apply plugin: 'license'
-apply plugin:'application'
 
 dependencies {
     compile (
@@ -57,6 +57,9 @@ dependencies {
 
 mainClassName = "bz.infectd.Application"
 
+// Avoid cleanProto task (deletes code)
+clean.dependsOn = []
+
 run {
     if(project.hasProperty('args')){
         args project.args.split('\\s+')
@@ -64,7 +67,6 @@ run {
     if(project.hasProperty('debug')){
         jvmArgs "-Dinfectd.debug=" + project.debug
     }
-    
 }
 
 test { 
@@ -84,13 +86,11 @@ javadoc {
 }
 
 protoBuf {
-
     protoc {
         'Linux' {
             path = '/usr/bin/protoc'
         }
     }
-
     lang {
         java
     }
