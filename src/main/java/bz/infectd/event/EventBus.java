@@ -12,10 +12,14 @@ public class EventBus {
     private com.google.common.eventbus.EventBus bus;
 
     /**
-     * @param eventBus
+     * For tests purpose
      */
-    public EventBus(com.google.common.eventbus.EventBus eventBus) {
+    protected EventBus(com.google.common.eventbus.EventBus eventBus) {
         this.bus = eventBus;
+    }
+
+    public EventBus() {
+        this(new com.google.common.eventbus.EventBus());
     }
 
     public void nodeJoined(String address, int port) {

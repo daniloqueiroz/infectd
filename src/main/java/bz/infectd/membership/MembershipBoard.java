@@ -12,6 +12,8 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 
+import bz.infectd.event.EventBus;
+
 /**
  * Keep track of all the current members by managing they heartbeats.
  * This class is responsible by mark missing member, remove members missing for
@@ -23,6 +25,14 @@ public class MembershipBoard {
 
     private static final Logger logger = getLogger(MembershipBoard.class);
     private Map<String, Heartbeat> heartbeats = new HashMap<>();
+    private EventBus bus;
+
+    /**
+     * @param bus
+     */
+    public MembershipBoard(EventBus bus) {
+        this.bus = bus;
+    }
 
     /**
      * Gets all the heartbeats.
@@ -63,8 +73,8 @@ public class MembershipBoard {
             modified = originalHeartbeat.hasChanged();
         } else {
             this.heartbeats.put(key, heartbeat);
-            // TODO notify new member joined
             logger.info("Node {} has joined - adding heartbeat", key);
+            this.bus.nodeJoined(heartbeat.address(), heartbeat.port());
         }
         return modified;
     }
@@ -87,6 +97,7 @@ public class MembershipBoard {
             } else {
                 heartbeat.markMissing();
                 if (heartbeat.missingRounds() > getConfiguration().roundsCount()) {
+                    this.bus.nodeLeft(heartbeat.address(), heartbeat.port());
                     toBeRemove.add(createHeartbeatKey(heartbeat.address(), heartbeat.port()));
                 }
             }
@@ -104,7 +115,6 @@ public class MembershipBoard {
     private void removeDeads(Collection<String> toRemove) {
         for (String nodeKey : toRemove) {
             this.heartbeats.remove(nodeKey);
-            // TODO notify member left
             logger.info("Node {} dead - removing heartbeat", nodeKey);
         }
     }

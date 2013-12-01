@@ -12,6 +12,7 @@ import bz.infectd.communication.gossip.protocol.Messages.Gossip;
 import bz.infectd.communication.gossip.udp.Client;
 import bz.infectd.communication.gossip.udp.Server;
 import bz.infectd.core.Clock;
+import bz.infectd.event.EventBus;
 import bz.infectd.journaling.GossipJournalAdapter;
 import bz.infectd.journaling.Journal;
 import bz.infectd.membership.Heartbeat;
@@ -49,7 +50,8 @@ public class Daemon {
     }
 
     private Journal setupJornal() {
-        MembershipBoard board = new MembershipBoard();
+        EventBus bus = new EventBus();
+        MembershipBoard board = new MembershipBoard(bus);
         return new Journal(board);
     }
 
