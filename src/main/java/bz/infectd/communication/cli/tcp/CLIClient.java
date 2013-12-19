@@ -15,6 +15,7 @@ import io.netty.handler.codec.protobuf.ProtobufEncoder;
 import io.netty.handler.codec.protobuf.ProtobufVarint32FrameDecoder;
 import io.netty.handler.codec.protobuf.ProtobufVarint32LengthFieldPrepender;
 
+import java.net.SocketException;
 import java.util.concurrent.CountDownLatch;
 
 import org.slf4j.Logger;
@@ -38,16 +39,21 @@ public class CLIClient {
         this.port = port;
     }
 
-    public Response send(Command cmd) throws Exception {
-        Bootstrap bootstrap = new Bootstrap();
-        bootstrap.group(ioLoop()).channel(NioSocketChannel.class).handler(new ClientInitializer());
-
-        Channel ch = bootstrap.connect(this.host, this.port).sync().channel();
+    public Response send(Command cmd) throws SocketException, InterruptedException {
+        Channel ch = null;
         try {
+            Bootstrap bootstrap = new Bootstrap();
+            bootstrap.group(ioLoop()).channel(NioSocketChannel.class)
+                    .handler(new ClientInitializer());
+
+            ch = bootstrap.connect(this.host, this.port).sync().channel();
             ClientHandler client = ch.pipeline().get(ClientHandler.class);
             return client.sendCommand(cmd);
         } finally {
-            ch.close();
+            if (ch != null) {
+                ch.close();
+            }
+            ioLoop().shutdownGracefully();
         }
     }
 

@@ -1,8 +1,10 @@
 package bz.infectd.communication.cli.tcp;
 
-import static java.lang.String.format;
 import static bz.infectd.cli.commands.CommandFactory.create;
+import static java.lang.String.format;
 import static org.slf4j.LoggerFactory.getLogger;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.SimpleChannelInboundHandler;
 
 import org.slf4j.Logger;
 
@@ -11,8 +13,6 @@ import bz.infectd.cli.commands.InfectdCommandException;
 import bz.infectd.communication.cli.protocol.Messages.Command;
 import bz.infectd.communication.cli.protocol.Messages.Response;
 import bz.infectd.communication.cli.protocol.Messages.Response.Builder;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.SimpleChannelInboundHandler;
 
 /**
  * @author Danilo Queiroz <dpenna.queiroz@gmail.com>
@@ -26,7 +26,7 @@ public class CommandHandler extends SimpleChannelInboundHandler<Command> {
         String cmdName = cmd.getCommand();
         String[] args = (cmd.hasParams()) ? cmd.getParams().split(" ") : new String[0];
 
-        Response resp = executeCommand(cmdName, args);
+        Response resp = this.executeCommand(cmdName, args);
 
         ctx.writeAndFlush(resp);
     }
@@ -34,7 +34,7 @@ public class CommandHandler extends SimpleChannelInboundHandler<Command> {
     private Response executeCommand(String cmdName, String[] args) {
         Builder responseBuilder = Response.newBuilder();
         try {
-            LOG.info("Trying to execute command %s - %s", cmdName, args);
+            LOG.info("Trying to execute command {} {}", cmdName, args);
             InfectdCommand command = create(cmdName);
             responseBuilder.setMessage(command.execute(args)).setExitCode(0);
         } catch (InfectdCommandException ex) {

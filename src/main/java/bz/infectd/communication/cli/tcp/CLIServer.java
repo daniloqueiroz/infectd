@@ -24,14 +24,12 @@ public class CLIServer {
 
     private static final Logger logger = getLogger(CLIServer.class);
     private final int port;
-    private CommandHandler cmdHandler;
 
-    public CLIServer(int port, CommandHandler cmdHandler) {
+    public CLIServer(int port) {
         this.port = port;
-        this.cmdHandler = cmdHandler;
     }
 
-    public void listen() throws Exception {
+    public void listen() throws InterruptedException {
         ServerBootstrap bootstrap = new ServerBootstrap();
         bootstrap.group(ioLoop()).channel(NioServerSocketChannel.class)
                 .childHandler(new ServerInitializer());
@@ -53,7 +51,7 @@ public class CLIServer {
 
             pipeline.addLast("frameEncoder", new ProtobufVarint32LengthFieldPrepender());
             pipeline.addLast("protobufEncoder", new ProtobufEncoder());
-            pipeline.addLast("handler", CLIServer.this.cmdHandler);
+            pipeline.addLast("handler", new CommandHandler());
         }
     }
 
@@ -64,6 +62,6 @@ public class CLIServer {
         } else {
             port = 8212;
         }
-        new CLIServer(port, new CommandHandler()).listen();
+        new CLIServer(port).listen();
     }
 }

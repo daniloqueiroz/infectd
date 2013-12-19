@@ -7,6 +7,7 @@ import static org.slf4j.LoggerFactory.getLogger;
 
 import org.slf4j.Logger;
 
+import bz.infectd.communication.cli.tcp.CLIServer;
 import bz.infectd.communication.gossip.GossipHandler;
 import bz.infectd.communication.gossip.protocol.Messages.Gossip;
 import bz.infectd.communication.gossip.udp.GossipClient;
@@ -27,7 +28,6 @@ public class Daemon {
 
     private Journal journal;
     private HeartbeatMonitor monitor;
-    private GossipServer server;
     private Clock clock;
     private Configuration config;
 
@@ -43,9 +43,10 @@ public class Daemon {
         this.journal = this.setupJornal();
         this.monitor = new HeartbeatMonitor(new Heartbeat(this.config.hostname(),
                 this.config.networkPort()));
-        this.server = this.setupServer();
+        GossipServer gossipServer = this.setupGossipServer();
         this.broadcastHeartbeat();
-        this.server.listen();
+        gossipServer.listen();
+        new CLIServer(this.config.networkPort()).listen();
     }
 
     private Journal setupJornal() {
@@ -53,7 +54,7 @@ public class Daemon {
         return new Journal(board);
     }
 
-    private GossipServer setupServer() {
+    private GossipServer setupGossipServer() {
         final GossipHandler handler = new GossipJournalAdapter(this.journal);
         GossipServer udpServer = new GossipServer(this.config.networkPort(), new GossipHandler() {
             private transient boolean hasReceivedFirstMessage = false;
