@@ -1,0 +1,15 @@
+package gossip;
+
+option java_package = "bz.infectd.communication.cli.protocol";
+option java_outer_classname = "Messages";
+option optimize_for = SPEED;
+
+message Command {
+  required string command = 1;
+  optional string params = 2;
+}
+
+message Response {
+  required int32 exit_code = 1;
+  optional string message = 2;
+}
