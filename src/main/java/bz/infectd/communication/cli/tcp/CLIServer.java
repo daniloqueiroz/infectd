@@ -37,7 +37,7 @@ public class CLIServer {
                 .childHandler(new ServerInitializer());
 
         logger.info("TCP server listen to port {}", this.port);
-        bootstrap.bind(this.port).sync().channel().closeFuture();
+        bootstrap.bind("127.0.0.1", this.port).sync().channel().closeFuture();
     }
 
     /**
@@ -53,7 +53,7 @@ public class CLIServer {
 
             pipeline.addLast("frameEncoder", new ProtobufVarint32LengthFieldPrepender());
             pipeline.addLast("protobufEncoder", new ProtobufEncoder());
-            pipeline.addLast("handler", cmdHandler);
+            pipeline.addLast("handler", CLIServer.this.cmdHandler);
         }
     }
 
