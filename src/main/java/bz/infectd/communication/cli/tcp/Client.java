@@ -104,7 +104,7 @@ public class Client {
         // Parse options.
         String host = "127.0.0.1";
         int port = 8212;
-        Command cmd = Command.newBuilder().setCommand("echo").setParams("lalal").build();
+        Command cmd = Command.newBuilder().setCommand("ping").setParams("lalal").build();
         Response resp = new Client(host, port).send(cmd);
         if (resp.getExitCode() == 0) {
             System.out.println(resp.getMessage());
