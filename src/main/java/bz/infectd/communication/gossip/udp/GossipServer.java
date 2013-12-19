@@ -21,9 +21,9 @@ import bz.infectd.communication.gossip.protocol.Messages.Gossip;
  * 
  * @author Danilo Queiroz <dpenna.queiroz@gmail.com>
  */
-public class Server extends SimpleChannelInboundHandler<DatagramPacket> {
+public class GossipServer extends SimpleChannelInboundHandler<DatagramPacket> {
 
-    private static final Logger logger = getLogger(Server.class);
+    private static final Logger logger = getLogger(GossipServer.class);
     private final int port;
     private GossipHandler gossipHandler;
 
@@ -31,7 +31,7 @@ public class Server extends SimpleChannelInboundHandler<DatagramPacket> {
      * @param port
      *            The port this server should listen to.
      */
-    public Server(int port, GossipHandler handler) {
+    public GossipServer(int port, GossipHandler handler) {
         this.port = port;
         this.gossipHandler = handler;
     }
@@ -74,7 +74,7 @@ public class Server extends SimpleChannelInboundHandler<DatagramPacket> {
      * Just for ad-hoc tests
      */
     public static void main(String[] args) throws Exception {
-        new Server(7777, new GossipHandler() {
+        new GossipServer(7777, new GossipHandler() {
             @Override
             public void add(Gossip message) {
                 logger.info("Message received: {}", message);

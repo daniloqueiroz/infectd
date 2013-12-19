@@ -9,8 +9,8 @@ import org.slf4j.Logger;
 
 import bz.infectd.communication.gossip.GossipHandler;
 import bz.infectd.communication.gossip.protocol.Messages.Gossip;
-import bz.infectd.communication.gossip.udp.Client;
-import bz.infectd.communication.gossip.udp.Server;
+import bz.infectd.communication.gossip.udp.GossipClient;
+import bz.infectd.communication.gossip.udp.GossipServer;
 import bz.infectd.core.Clock;
 import bz.infectd.journaling.GossipJournalAdapter;
 import bz.infectd.journaling.Journal;
@@ -27,7 +27,7 @@ public class Daemon {
 
     private Journal journal;
     private HeartbeatMonitor monitor;
-    private Server server;
+    private GossipServer server;
     private Clock clock;
     private Configuration config;
 
@@ -53,9 +53,9 @@ public class Daemon {
         return new Journal(board);
     }
 
-    private Server setupServer() {
+    private GossipServer setupServer() {
         final GossipHandler handler = new GossipJournalAdapter(this.journal);
-        Server udpServer = new Server(this.config.networkPort(), new GossipHandler() {
+        GossipServer udpServer = new GossipServer(this.config.networkPort(), new GossipHandler() {
             private transient boolean hasReceivedFirstMessage = false;
 
             @Override
@@ -80,7 +80,7 @@ public class Daemon {
     }
 
     private void broadcastHeartbeat() throws InterruptedException {
-        Client udpClient = new Client(this.config.networkPort());
+        GossipClient udpClient = new GossipClient(this.config.networkPort());
         udpClient.send(createMessage(this.monitor.heartbeat()));
     }
 }

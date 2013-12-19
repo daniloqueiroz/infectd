@@ -25,7 +25,7 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import bz.infectd.Configuration;
-import bz.infectd.communication.gossip.udp.Client;
+import bz.infectd.communication.gossip.udp.GossipClient;
 import bz.infectd.membership.Heartbeat;
 
 /**
@@ -35,13 +35,13 @@ import bz.infectd.membership.Heartbeat;
 @PrepareForTest(PropagationAgent.class)
 public class PropagationAgentTest {
 
-    private Client agentMock;
+    private GossipClient agentMock;
     private Configuration config;
     private int port;
 
     @Before
     public void setUp() {
-        this.agentMock = createMock(Client.class);
+        this.agentMock = createMock(GossipClient.class);
         this.config = getConfiguration();
         this.port = 7770;
     }
@@ -64,7 +64,7 @@ public class PropagationAgentTest {
         Collection<Heartbeat> entries = new LinkedList<>();
         entries.add(entryHb);
         PropagationAgent<Heartbeat> agent = new PropagationAgent<>(entries, null);
-        expectNew(Client.class, "127.0.0.1", this.port).andReturn(this.agentMock);
+        expectNew(GossipClient.class, "127.0.0.1", this.port).andReturn(this.agentMock);
         this.agentMock.send(eq(createMessage(entryHb)));
         replayAll();
         List<Heartbeat> beats = Arrays.asList(new Heartbeat("127.0.0.1", this.port,

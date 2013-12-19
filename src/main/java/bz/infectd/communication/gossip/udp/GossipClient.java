@@ -22,10 +22,10 @@ import bz.infectd.communication.gossip.protocol.Messages.Gossip.Type;
  * 
  * @author Danilo Queiroz <dpenna.queiroz@gmail.com>
  */
-public class Client {
+public class GossipClient {
 
     private static final String BROADCAST_ADDRESS = "255.255.255.255";
-    private static final Logger logger = getLogger(Client.class);
+    private static final Logger logger = getLogger(GossipClient.class);
     private InetSocketAddress address;
     private boolean isBroadcast = false;
 
@@ -35,7 +35,7 @@ public class Client {
      * @param port
      *            The destination PORT to sent to.
      */
-    public Client(int port) {
+    public GossipClient(int port) {
         this.address = new InetSocketAddress(BROADCAST_ADDRESS, port);
         this.isBroadcast = true;
     }
@@ -48,7 +48,7 @@ public class Client {
      * @param port
      *            The destination PORT.
      */
-    public Client(String host, int port) {
+    public GossipClient(String host, int port) {
         this.address = new InetSocketAddress(host, port);
     }
 
@@ -63,7 +63,7 @@ public class Client {
         Bootstrap bootstrap = new Bootstrap();
         bootstrap.group(ioLoop()).channel(NioDatagramChannel.class)
                 .option(ChannelOption.SO_BROADCAST, this.isBroadcast)
-                .handler(new LoggingHandler(Client.class, LogLevel.DEBUG));
+                .handler(new LoggingHandler(GossipClient.class, LogLevel.DEBUG));
 
         Channel ch = bootstrap.bind(0).sync().channel();
         ch.writeAndFlush(gossipToDatagram(message, this.address));
@@ -75,7 +75,7 @@ public class Client {
      * Just for ad-hoc tests
      */
     public static void main(String[] args) throws InterruptedException {
-        Client c = new Client("127.0.0.1", 7777);
+        GossipClient c = new GossipClient("127.0.0.1", 7777);
         Gossip g = Gossip.newBuilder().setType(Type.HEARTBEAT).build();
         c.send(g);
     }

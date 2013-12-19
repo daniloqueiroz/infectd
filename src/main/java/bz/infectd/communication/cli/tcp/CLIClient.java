@@ -27,13 +27,13 @@ import bz.infectd.communication.cli.protocol.Messages.Response;
  * @author Danilo Queiroz <dpenna.queiroz@gmail.com>
  * 
  */
-public class Client {
+public class CLIClient {
 
-    private static final Logger logger = getLogger(Client.class);
+    private static final Logger logger = getLogger(CLIClient.class);
     private final String host;
     private final int port;
 
-    public Client(String host, int port) {
+    public CLIClient(String host, int port) {
         this.host = host;
         this.port = port;
     }
@@ -105,7 +105,7 @@ public class Client {
         String host = "127.0.0.1";
         int port = 8212;
         Command cmd = Command.newBuilder().setCommand("ping").setParams("lalal").build();
-        Response resp = new Client(host, port).send(cmd);
+        Response resp = new CLIClient(host, port).send(cmd);
         if (resp.getExitCode() == 0) {
             System.out.println(resp.getMessage());
         } else {

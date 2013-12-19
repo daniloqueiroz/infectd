@@ -2,6 +2,9 @@ package bz.infectd;
 
 import static bz.infectd.Configuration.getConfiguration;
 import static java.lang.String.valueOf;
+import bz.infectd.communication.cli.protocol.Messages.Command;
+import bz.infectd.communication.cli.protocol.Messages.Response;
+import bz.infectd.communication.cli.tcp.CLIClient;
 
 /**
  * @author Danilo Queiroz <dpenna.queiroz@gmail.com>

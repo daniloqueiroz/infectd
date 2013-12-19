@@ -20,13 +20,13 @@ import bz.infectd.communication.cli.protocol.Messages;
  * @author Danilo Queiroz <dpenna.queiroz@gmail.com>
  * 
  */
-public class Server {
+public class CLIServer {
 
-    private static final Logger logger = getLogger(Server.class);
+    private static final Logger logger = getLogger(CLIServer.class);
     private final int port;
     private CommandHandler cmdHandler;
 
-    public Server(int port, CommandHandler cmdHandler) {
+    public CLIServer(int port, CommandHandler cmdHandler) {
         this.port = port;
         this.cmdHandler = cmdHandler;
     }
@@ -64,6 +64,6 @@ public class Server {
         } else {
             port = 8212;
         }
-        new Server(port, new CommandHandler()).listen();
+        new CLIServer(port, new CommandHandler()).listen();
     }
 }

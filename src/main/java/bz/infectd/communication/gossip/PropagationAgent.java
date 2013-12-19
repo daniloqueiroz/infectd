@@ -12,7 +12,7 @@ import java.util.List;
 import org.slf4j.Logger;
 
 import bz.infectd.Configuration;
-import bz.infectd.communication.gossip.udp.Client;
+import bz.infectd.communication.gossip.udp.GossipClient;
 import bz.infectd.membership.Heartbeat;
 
 /**
@@ -52,7 +52,7 @@ public class PropagationAgent<T extends Propagable> {
     private void sendEntries(Heartbeat member) {
         LOG.info("Propagating {} entries to {}:{}", this.data.size(), member.address(),
                 member.port());
-        Client client = new Client(member.address(), member.port());
+        GossipClient client = new GossipClient(member.address(), member.port());
         for (Propagable toPropagate : this.data) {
             try {
                 client.send(createMessage(toPropagate));
