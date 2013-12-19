@@ -37,6 +37,7 @@ dependencies {
         'io.netty:netty-transport-udt:4.0.12.Final',
         'org.slf4j:slf4j-api:1.7.5',
         'com.google.protobuf:protobuf-java:2.4.1',
+        'args4j:args4j:2.0.26',
     )
 
     runtime (
@@ -63,9 +64,6 @@ clean.dependsOn = []
 run {
     if(project.hasProperty('args')){
         args project.args.split('\\s+')
-    }
-    if(project.hasProperty('debug')){
-        jvmArgs "-Dinfectd.debug=" + project.debug
     }
 }
 

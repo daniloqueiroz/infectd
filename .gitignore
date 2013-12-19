@@ -4,4 +4,4 @@ bin/
 .settings
 .classpath
 .project
-infectd.log
+infectd-*.log

@@ -1,27 +1,38 @@
 <configuration>
-	<appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+    <appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
         </encoder>
     </appender>
 
     <!-- File Appenders -->
-    <appender name="logstash" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>/var/log/infectd.log</file>
-        <!-- https://github.com/logstash/logstash-logback-encoder -->
-        <encoder class="net.logstash.logback.encoder.LogstashEncoder" />
-    </appender>
-    <appender name="file" class="ch.qos.logback.core.FileAppender">
-        <file>infectd.log</file>
-        <append>true</append>
-        <encoder>
-            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
-        </encoder>
-    </appender>
-    
+    <if condition='property("server_mode").equalsIgnoreCase("true")'>
+        <!-- DEBUG MODE -->
+        <then>
+            <appender name="file" class="ch.qos.logback.core.FileAppender">
+                <file>infectd-server.log</file>
+                <append>true</append>
+                <encoder>
+                    <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level
+                        %logger{36} - %msg%n</pattern>
+                </encoder>
+            </appender>
+        </then>
+        <!-- NORMAL MODE -->
+        <else>
+            <appender name="file" class="ch.qos.logback.core.FileAppender">
+                <file>infectd-client.log</file>
+                <append>true</append>
+                <encoder>
+                    <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level
+                        %logger{36} - %msg%n</pattern>
+                </encoder>
+            </appender>
+        </else>
+    </if>
 
-  <!-- Loggers -->
-    <if condition='property("debug").equalsIgnoreCase("true")'>
+    <!-- Loggers -->
+    <if condition='property("debug_mode").equalsIgnoreCase("true")'>
         <!-- DEBUG MODE -->
         <then>
             <logger name="io.netty" level="INFO" additivity="false">

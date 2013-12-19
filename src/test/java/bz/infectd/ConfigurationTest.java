@@ -1,10 +1,8 @@
 package bz.infectd;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -39,18 +37,6 @@ public class ConfigurationTest {
     @Test
     public void getsDefaultRoundsCount() {
         assertEquals(6, this.conf.roundsCount());
-    }
-
-    @Test
-    public void getsDefaultDebugMode() {
-        assertTrue(this.conf.debugMode());
-    }
-
-    @Test
-    public void getsDebugModeFromSystem() {
-        assertTrue(this.conf.debugMode());
-        System.setProperty("infectd.debug", "False");
-        assertFalse(this.conf.debugMode());
     }
 
     @Test

@@ -1,6 +1,5 @@
 package bz.infectd;
 
-import static java.lang.Boolean.parseBoolean;
 import static java.lang.ClassLoader.getSystemResourceAsStream;
 import static java.lang.Float.parseFloat;
 import static java.lang.Integer.parseInt;
@@ -81,15 +80,6 @@ public class Configuration {
      */
     public int roundsCount() {
         return parseInt(this.properties.getProperty("infectd.rounds_to_death"));
-    }
-
-    /**
-     * @return <code>true</code> if on debug mode, <code>false</code> otherwise.
-     */
-    public boolean debugMode() {
-        String defaultValue = this.properties.getProperty("infectd.debug");
-        String debugMode = System.getProperty("infectd.debug", defaultValue);
-        return parseBoolean(debugMode);
     }
 
     /**
