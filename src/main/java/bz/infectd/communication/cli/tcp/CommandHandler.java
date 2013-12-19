@@ -1,4 +1,4 @@
-package bz.infectd.communication.cli;
+package bz.infectd.communication.cli.tcp;
 
 import static java.lang.String.format;
 import static bz.infectd.cli.commands.CommandFactory.create;

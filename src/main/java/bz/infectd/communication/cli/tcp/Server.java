@@ -14,7 +14,6 @@ import io.netty.handler.codec.protobuf.ProtobufVarint32LengthFieldPrepender;
 
 import org.slf4j.Logger;
 
-import bz.infectd.communication.cli.CommandHandler;
 import bz.infectd.communication.cli.protocol.Messages;
 
 /**
