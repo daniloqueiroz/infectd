@@ -105,19 +105,4 @@ public class CLIClient {
             this.lock.countDown();
         }
     }
-
-    public static void main(String[] args) throws Exception {
-        // Parse options.
-        String host = "127.0.0.1";
-        int port = 8212;
-        Command cmd = Command.newBuilder().setCommand("ping").setParams("lalal").build();
-        Response resp = new CLIClient(host, port).send(cmd);
-        if (resp.getExitCode() == 0) {
-            System.out.println(resp.getMessage());
-        } else {
-            System.err.println(resp.getMessage());
-        }
-        System.exit(resp.getExitCode());
-    }
-
 }

@@ -3,8 +3,10 @@ package bz.infectd.communication.cli.tcp;
 import static bz.infectd.core.EventLoopWrapper.ioLoop;
 import static org.slf4j.LoggerFactory.getLogger;
 import io.netty.bootstrap.ServerBootstrap;
+import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
+import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.codec.protobuf.ProtobufDecoder;
@@ -14,7 +16,10 @@ import io.netty.handler.codec.protobuf.ProtobufVarint32LengthFieldPrepender;
 
 import org.slf4j.Logger;
 
+import bz.infectd.cli.commands.CommandFactory;
+import bz.infectd.communication.cli.CommandAdapter;
 import bz.infectd.communication.cli.protocol.Messages;
+import bz.infectd.communication.cli.protocol.Messages.Command;
 
 /**
  * @author Danilo Queiroz <dpenna.queiroz@gmail.com>
@@ -22,11 +27,13 @@ import bz.infectd.communication.cli.protocol.Messages;
  */
 public class CLIServer {
 
-    private static final Logger logger = getLogger(CLIServer.class);
+    private static final Logger LOG = getLogger(CLIServer.class);
     private final int port;
+    private CommandAdapter cmdAdapter;
 
-    public CLIServer(int port) {
+    public CLIServer(int port, CommandFactory factory) {
         this.port = port;
+        this.cmdAdapter = new CommandAdapter(factory);
     }
 
     public void listen() throws InterruptedException {
@@ -34,7 +41,7 @@ public class CLIServer {
         bootstrap.group(ioLoop()).channel(NioServerSocketChannel.class)
                 .childHandler(new ServerInitializer());
 
-        logger.info("TCP server listen to port {}", this.port);
+        LOG.info("TCP server listen to port {}", this.port);
         bootstrap.bind("127.0.0.1", this.port).sync().channel().closeFuture();
     }
 
@@ -55,13 +62,12 @@ public class CLIServer {
         }
     }
 
-    public static void main(String[] args) throws Exception {
-        int port;
-        if (args.length > 0) {
-            port = Integer.parseInt(args[0]);
-        } else {
-            port = 8212;
+    private class CommandHandler extends SimpleChannelInboundHandler<Command> {
+        @Override
+        protected void channelRead0(ChannelHandlerContext ctx, Command cmd) throws Exception {
+            String cmdName = cmd.getCommand();
+            String[] args = (cmd.hasParams()) ? cmd.getParams().split(" ") : new String[0];
+            ctx.writeAndFlush(CLIServer.this.cmdAdapter.executeCommand(cmdName, args));
         }
-        new CLIServer(port).listen();
     }
 }

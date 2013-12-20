@@ -8,6 +8,7 @@ import static org.slf4j.LoggerFactory.getLogger;
 
 import org.slf4j.Logger;
 
+import bz.infectd.cli.commands.CommandFactory;
 import bz.infectd.communication.cli.tcp.CLIServer;
 import bz.infectd.communication.gossip.GossipHandler;
 import bz.infectd.communication.gossip.protocol.Messages.Gossip;
@@ -43,7 +44,7 @@ public class Daemon {
         logger.info("Starting daemon - {}:{}", this.config.hostname(), this.config.networkPort());
         this.broadcastHeartbeat();
         this.setupGossipServer().listen();
-        new CLIServer(this.config.networkPort()).listen();
+        new CLIServer(this.config.networkPort(), new CommandFactory(this.injector)).listen();
     }
 
     private GossipServer setupGossipServer() {

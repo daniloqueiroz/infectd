@@ -1,5 +1,7 @@
 package bz.infectd.cli.commands;
 
+import com.google.inject.Injector;
+
 /**
  * Simple factory for the {@link InfectdCommand} using the
  * {@link CommandMapping}
@@ -21,6 +23,12 @@ public class CommandFactory {
         }
     }
 
+    private Injector injector;
+    
+    public CommandFactory(Injector injector) {
+        this.injector = injector;
+    }
+
     /**
      * Create the {@link InfectdCommand} with the given commandName - based on
      * the {@link CommandMapping}.
@@ -31,12 +39,8 @@ public class CommandFactory {
      * @throws IllegalArgumentException
      *             If there's no command with the given name
      */
-    public static InfectdCommand create(String commandName) throws IllegalArgumentException {
+    public InfectdCommand create(String commandName) throws IllegalArgumentException {
         CommandMapping mapping = CommandMapping.valueOf(commandName.toUpperCase());
-        try {
-            return mapping.commandClass.newInstance();
-        } catch (InstantiationException | IllegalAccessException e) {
-            throw new IllegalArgumentException(e);
-        }
+        return this.injector.getInstance(mapping.commandClass);
     }
 }
