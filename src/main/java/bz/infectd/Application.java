@@ -33,11 +33,12 @@ public class Application {
         Application app = new Application();
         CmdLineParser parser = new CmdLineParser(app);
         parser.parseArgument(args);
-        printBanner();
+        if (!app.quiet) {
+            printBanner();
+        }
 
         if (app.help) {
             parser.printUsage(System.out);
-            System.exit(1);
         } else {
             app.start();
         }
@@ -60,6 +61,9 @@ public class Application {
 
     @Option(name = "--help", usage = "Show help message.")
     private boolean help = false;
+
+    @Option(name = "--quiet", usage = "Print only the result of the command.")
+    private boolean quiet = false;
 
     @Argument
     private List<String> arguments = new ArrayList<>();
@@ -132,10 +136,14 @@ public class Application {
             System.exit(-1);
 
         }
+        String pattern = "Server>\n%s\n";
+        if (this.quiet) {
+            pattern = "%s\n";
+        }
         if (resp.getExitCode() == 0) {
-            System.out.printf("Server>\n%s\n", resp.getMessage());
+            System.out.printf(pattern, resp.getMessage());
         } else {
-            System.err.printf("Server>\nError: %s\n", resp.getMessage());
+            System.err.printf(pattern, String.format("Error: %s", resp.getMessage()));
         }
         System.exit(resp.getExitCode());
     }
