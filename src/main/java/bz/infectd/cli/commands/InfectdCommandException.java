@@ -24,7 +24,7 @@ public class InfectdCommandException extends Exception {
      * @return the exitCode
      */
     public int getExitCode() {
-        return exitCode;
+        return this.exitCode;
     }
 
     /**

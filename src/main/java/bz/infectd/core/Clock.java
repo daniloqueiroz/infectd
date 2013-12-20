@@ -4,11 +4,11 @@ import static org.slf4j.LoggerFactory.getLogger;
 
 import org.slf4j.Logger;
 
-import com.google.inject.Inject;
-
 import bz.infectd.journaling.Journal;
 import bz.infectd.membership.Heartbeat;
 import bz.infectd.membership.HeartbeatMonitor;
+
+import com.google.inject.Inject;
 
 /**
  * This class periodically ticks to perform system maintenance task, such as

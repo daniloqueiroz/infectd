@@ -48,8 +48,8 @@ public class PropagationAgentTest {
 
     @Test
     public void propagatesSelectsAndInfects() throws Exception {
-        PropagationAgent<?> agent = createPartialMock(PropagationAgent.class, new String[] { "infect",
-                "selectMembers" }, null, null);
+        PropagationAgent<?> agent = createPartialMock(PropagationAgent.class, new String[] {
+                "infect", "selectMembers" }, null, null);
         List<Heartbeat> selected = new ArrayList<>();
         expect(agent.selectMembers()).andReturn(selected);
         agent.infect(selected);
@@ -67,8 +67,7 @@ public class PropagationAgentTest {
         expectNew(GossipClient.class, "127.0.0.1", this.port).andReturn(this.agentMock);
         this.agentMock.send(eq(createMessage(entryHb)));
         replayAll();
-        List<Heartbeat> beats = Arrays.asList(new Heartbeat("127.0.0.1", this.port,
-                1));
+        List<Heartbeat> beats = Arrays.asList(new Heartbeat("127.0.0.1", this.port, 1));
         agent.infect(beats);
         verifyAll();
     }

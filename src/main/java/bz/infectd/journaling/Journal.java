@@ -8,16 +8,16 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import org.slf4j.Logger;
 
-import com.google.inject.Inject;
-
 import bz.infectd.communication.gossip.PropagationAgent;
 import bz.infectd.membership.Heartbeat;
 import bz.infectd.membership.MembershipBoard;
 
+import com.google.inject.Inject;
+
 /**
- * Keep tracks of all the events received that are pending to process.
- * It keeps all the entries on a buffer and on {@link Journal#sync()} it sends
- * them to the fanout and reset the buffer.
+ * Keep tracks of all the events received that are pending to process. It keeps
+ * all the entries on a buffer and on {@link Journal#sync()} it sends them to
+ * the fanout and reset the buffer.
  * 
  * All the public methods of this class are thread-safe.
  * 

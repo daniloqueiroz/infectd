@@ -13,9 +13,9 @@ import java.util.Map;
 import org.slf4j.Logger;
 
 /**
- * Keep track of all the current members by managing they heartbeats.
- * This class is responsible by mark missing member, remove members missing for
- * long and notify the system about members joins/leaves.
+ * Keep track of all the current members by managing they heartbeats. This class
+ * is responsible by mark missing member, remove members missing for long and
+ * notify the system about members joins/leaves.
  * 
  * @author Danilo Queiroz <dpenna.queiroz@gmail.com>
  */
@@ -73,8 +73,7 @@ public class MembershipBoard {
      * This method checks which heartbeats hadn't been updated since last
      * 'sanitization' and mark them as missing. The {@link Heartbeat} marked as
      * missing for more than {@link MembershipBoard#MISSING_ROUNDS_TO_DEATH} are
-     * returned by this
-     * method.
+     * returned by this method.
      * 
      * @return The {@link String} keys for the heartbeats marked as missing for
      *         more than {@link MembershipBoard#MISSING_ROUNDS_TO_DEATH}

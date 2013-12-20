@@ -4,13 +4,13 @@ import static org.slf4j.LoggerFactory.getLogger;
 
 import org.slf4j.Logger;
 
-import com.google.inject.Inject;
-
 import bz.infectd.communication.gossip.GossipHandler;
 import bz.infectd.communication.gossip.protocol.Messages.Gossip;
 import bz.infectd.communication.gossip.protocol.Messages.Gossip.Type;
 import bz.infectd.core.IllegalMessageException;
 import bz.infectd.membership.Heartbeat;
+
+import com.google.inject.Inject;
 
 /**
  * This class is responsible by receiving {@link Gossip} messages and send the
@@ -42,8 +42,8 @@ public class GossipJournalAdapter implements GossipHandler {
 
     /**
      * Translate a
-     * {@link bz.infectd.communication.gossip.protocol.Messages.Heartbeat} to
-     * a {@link Heartbeat}
+     * {@link bz.infectd.communication.gossip.protocol.Messages.Heartbeat} to a
+     * {@link Heartbeat}
      */
     private Heartbeat translate(
             bz.infectd.communication.gossip.protocol.Messages.Heartbeat heartbeat) {

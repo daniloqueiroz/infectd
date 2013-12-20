@@ -2,7 +2,7 @@ package bz.infectd;
 
 /**
  * @author Danilo Queiroz <dpenna.queiroz@gmail.com>
- *
+ * 
  */
 public class ApplicationException extends RuntimeException {
 

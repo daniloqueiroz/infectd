@@ -122,7 +122,7 @@ public class Application {
             buf.append(' ');
         }
         Command cmd = Command.newBuilder().setCommand(command).setParams(buf.toString()).build();
-        CLIClient client = new CLIClient("127.0.0.1", config.networkPort());
+        CLIClient client = new CLIClient("127.0.0.1", this.config.networkPort());
         Response resp = null;
         try {
             resp = client.send(cmd);

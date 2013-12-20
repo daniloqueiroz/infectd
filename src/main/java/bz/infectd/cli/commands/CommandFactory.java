@@ -14,8 +14,7 @@ public class CommandFactory {
      * Maps a command with the enum name to a {@link InfectdCommand} class.
      */
     public enum CommandMapping {
-        PING(PingCommand.class),
-        MEMBERS(MembersCommand.class);
+        PING(PingCommand.class), MEMBERS(MembersCommand.class);
 
         private Class<? extends InfectdCommand> commandClass;
 
@@ -25,7 +24,7 @@ public class CommandFactory {
     }
 
     private Injector injector;
-    
+
     public CommandFactory(Injector injector) {
         this.injector = injector;
     }

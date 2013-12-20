@@ -2,10 +2,10 @@ package bz.infectd.cli.commands;
 
 import java.util.Collection;
 
-import com.google.inject.Inject;
-
 import bz.infectd.membership.Heartbeat;
 import bz.infectd.membership.MembershipBoard;
+
+import com.google.inject.Inject;
 
 /**
  * @author Danilo Queiroz <dpenna.queiroz@gmail.com>

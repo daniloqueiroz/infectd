@@ -2,7 +2,7 @@ package bz.infectd.core;
 
 /**
  * @author Danilo Queiroz <dpenna.queiroz@gmail.com>
- *
+ * 
  */
 public class IllegalMessageException extends RuntimeException {
 

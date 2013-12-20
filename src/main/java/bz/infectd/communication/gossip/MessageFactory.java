@@ -38,10 +38,9 @@ public class MessageFactory {
                 .setNodeHost(hb.address()).setNodePort(hb.port()));
         return builder.build();
     }
-    
+
     /**
-     * Create a {@link GossipMessage} for the propagate the given
-     * Object
+     * Create a {@link GossipMessage} for the propagate the given Object
      * 
      * @param obj
      *            The {@link Object} to be encapsulate on the

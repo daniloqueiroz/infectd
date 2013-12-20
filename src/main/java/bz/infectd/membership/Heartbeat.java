@@ -5,7 +5,6 @@ import bz.infectd.communication.gossip.Propagable;
 
 import com.google.common.base.Objects;
 
-
 /**
  * Encapsulates all the extra-knowledge necessary to handle heartbeats from
  * external nodes. It extends the {@link Heartbeat} class by adding tracking of
@@ -28,7 +27,7 @@ public class Heartbeat implements Propagable {
     public Heartbeat(String address, int port) {
         this(address, port, 0);
     }
-    
+
     public Heartbeat(String address, int port, int clock) {
         this.address = address;
         this.port = port;
@@ -119,8 +118,10 @@ public class Heartbeat implements Propagable {
             return false;
         }
     }
-    
-    /* (non-Javadoc)
+
+    /*
+     * (non-Javadoc)
+     * 
      * @see java.lang.Object#toString()
      */
     @Override
