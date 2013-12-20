@@ -4,6 +4,8 @@ import static org.slf4j.LoggerFactory.getLogger;
 
 import org.slf4j.Logger;
 
+import com.google.inject.Inject;
+
 import bz.infectd.communication.gossip.GossipHandler;
 import bz.infectd.communication.gossip.protocol.Messages.Gossip;
 import bz.infectd.communication.gossip.protocol.Messages.Gossip.Type;
@@ -20,17 +22,11 @@ public class GossipJournalAdapter implements GossipHandler {
     private static final Logger logger = getLogger(GossipJournalAdapter.class);
     private Journal journal;
 
+    @Inject
     public GossipJournalAdapter(Journal journal) {
         this.journal = journal;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * bz.infectd.core.GossipHandler#addEntry(bz.infectd.communication.protocol
-     * .gossip.P2PProtocol.Gossip)
-     */
     @Override
     public void add(Gossip message) {
         switch (message.getType().getNumber()) {

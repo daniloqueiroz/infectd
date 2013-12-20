@@ -31,13 +31,13 @@ apply plugin: 'license'
 
 dependencies {
     compile (
-        'com.google.inject:guice:3.0',
         'com.google.guava:guava:15.0',
         'io.netty:netty-all:4.0.12.Final',
         'io.netty:netty-transport-udt:4.0.12.Final',
         'org.slf4j:slf4j-api:1.7.5',
         'com.google.protobuf:protobuf-java:2.4.1',
         'args4j:args4j:2.0.26',
+        'com.google.inject:guice:3.0',
     )
 
     runtime (

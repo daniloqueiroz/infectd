@@ -8,6 +8,8 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import org.slf4j.Logger;
 
+import com.google.inject.Inject;
+
 import bz.infectd.communication.gossip.PropagationAgent;
 import bz.infectd.membership.Heartbeat;
 import bz.infectd.membership.MembershipBoard;
@@ -25,12 +27,10 @@ public class Journal {
 
     private static final Logger logger = getLogger(Journal.class);
     private Lock monitor = new ReentrantLock();
-    private MembershipBoard board;
     protected EntriesCollection entries = new EntriesCollection();
+    private MembershipBoard board;
 
-    /**
-     * @param board
-     */
+    @Inject
     public Journal(MembershipBoard board) {
         this.board = board;
     }

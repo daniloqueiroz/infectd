@@ -4,6 +4,8 @@ import static org.slf4j.LoggerFactory.getLogger;
 
 import org.slf4j.Logger;
 
+import com.google.inject.Inject;
+
 import bz.infectd.journaling.Journal;
 import bz.infectd.membership.Heartbeat;
 import bz.infectd.membership.HeartbeatMonitor;
@@ -20,6 +22,7 @@ public class Clock implements Runnable {
     private Journal journal;
     private HeartbeatMonitor monitor;
 
+    @Inject
     public Clock(Journal journal, HeartbeatMonitor monitor) {
         this.journal = journal;
         this.monitor = monitor;
