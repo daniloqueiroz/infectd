@@ -25,7 +25,7 @@ import bz.infectd.membership.MembershipBoard;
  */
 public class Journal {
 
-    private static final Logger logger = getLogger(Journal.class);
+    private static final Logger LOG = getLogger(Journal.class);
     private Lock monitor = new ReentrantLock();
     protected EntriesCollection entries = new EntriesCollection();
     private MembershipBoard board;
@@ -40,7 +40,7 @@ public class Journal {
      */
     public void add(Heartbeat entry) {
         this.monitor.lock();
-        logger.debug("Adding new entry {}", entry);
+        LOG.debug("Adding new entry {}", entry);
         this.entries.add(entry);
         this.monitor.unlock();
     }
@@ -52,7 +52,7 @@ public class Journal {
      * data for each entry.
      */
     public void sync() {
-        logger.debug("Performing journaling sync");
+        LOG.debug("Performing journaling sync");
         EntriesCollection toSync = this.rotateEntries();
         this.process(toSync);
     }

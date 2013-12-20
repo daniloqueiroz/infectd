@@ -25,7 +25,7 @@ import bz.infectd.communication.gossip.protocol.Messages.Gossip.Type;
 public class GossipClient {
 
     private static final String BROADCAST_ADDRESS = "255.255.255.255";
-    private static final Logger logger = getLogger(GossipClient.class);
+    private static final Logger LOG = getLogger(GossipClient.class);
     private InetSocketAddress address;
     private boolean isBroadcast = false;
 
@@ -67,7 +67,7 @@ public class GossipClient {
 
         Channel ch = bootstrap.bind(0).sync().channel();
         ch.writeAndFlush(gossipToDatagram(message, this.address));
-        logger.info("Message sent to {}: {}", this.address, message.getType());
+        LOG.info("Message sent to {}: {}", this.address, message.getType());
         ch.close();
     }
 

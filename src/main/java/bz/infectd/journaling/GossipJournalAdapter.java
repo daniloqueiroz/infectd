@@ -19,7 +19,7 @@ import bz.infectd.membership.Heartbeat;
  * @author Danilo Queiroz <dpenna.queiroz@gmail.com>
  */
 public class GossipJournalAdapter implements GossipHandler {
-    private static final Logger logger = getLogger(GossipJournalAdapter.class);
+    private static final Logger LOG = getLogger(GossipJournalAdapter.class);
     private Journal journal;
 
     @Inject
@@ -32,7 +32,7 @@ public class GossipJournalAdapter implements GossipHandler {
         switch (message.getType().getNumber()) {
         case Type.HEARTBEAT_VALUE:
             Heartbeat hb = this.translate(message.getHeartbeat());
-            logger.info("Heartbeart received: {}", hb);
+            LOG.info("Heartbeart received: {}", hb);
             this.journal.add(hb);
             break;
         default:

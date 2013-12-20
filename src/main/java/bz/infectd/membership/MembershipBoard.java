@@ -21,7 +21,7 @@ import org.slf4j.Logger;
  */
 public class MembershipBoard {
 
-    private static final Logger logger = getLogger(MembershipBoard.class);
+    private static final Logger LOG = getLogger(MembershipBoard.class);
     private Map<String, Heartbeat> heartbeats = new HashMap<>();
 
     /**
@@ -37,7 +37,7 @@ public class MembershipBoard {
      * @return The heartbeats that triggered modifications
      */
     public Collection<Heartbeat> updateHeartbeats(Collection<Heartbeat> heartbeats) {
-        logger.info("Updating {} heartbeats", heartbeats.size());
+        LOG.info("Updating {} heartbeats", heartbeats.size());
         Collection<Heartbeat> modified = new LinkedList<>();
         for (Heartbeat heartbeat : heartbeats) {
             if (this.updateHearbeat(heartbeat)) {
@@ -64,7 +64,7 @@ public class MembershipBoard {
         } else {
             this.heartbeats.put(key, heartbeat);
             // TODO notify new member joined
-            logger.info("Node {} has joined - adding heartbeat", key);
+            LOG.info("Node {} has joined - adding heartbeat", key);
         }
         return modified;
     }
@@ -105,7 +105,7 @@ public class MembershipBoard {
         for (String nodeKey : toRemove) {
             this.heartbeats.remove(nodeKey);
             // TODO notify member left
-            logger.info("Node {} dead - removing heartbeat", nodeKey);
+            LOG.info("Node {} dead - removing heartbeat", nodeKey);
         }
     }
 

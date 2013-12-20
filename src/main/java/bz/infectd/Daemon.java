@@ -26,7 +26,7 @@ import com.google.inject.Injector;
  */
 public class Daemon {
 
-    private static final Logger logger = getLogger(Daemon.class);
+    private static final Logger LOG = getLogger(Daemon.class);
 
     private Configuration config;
     private Injector injector;
@@ -41,7 +41,7 @@ public class Daemon {
      * Boots the Infectd Daemon
      */
     public void boot() throws InterruptedException {
-        logger.info("Starting daemon - {}:{}", this.config.hostname(), this.config.networkPort());
+        LOG.info("Starting daemon - {}:{}", this.config.hostname(), this.config.networkPort());
         this.broadcastHeartbeat();
         this.setupGossipServer().listen();
         new CLIServer(this.config.networkPort(), new CommandFactory(this.injector)).listen();
@@ -68,7 +68,7 @@ public class Daemon {
     private synchronized void setupClock() {
         if (!this.hasStartedClock) {
             Clock clock = this.injector.getInstance(Clock.class);
-            logger.info("Scheduling clock to happen every {} seconds", this.config.clockInterval());
+            LOG.info("Scheduling clock to happen every {} seconds", this.config.clockInterval());
             scheduleRecurrentCommand(clock, this.config.clockInterval());
             this.hasStartedClock = false;
         }

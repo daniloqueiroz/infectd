@@ -18,7 +18,7 @@ import bz.infectd.membership.HeartbeatMonitor;
  */
 public class Clock implements Runnable {
 
-    private static final Logger logger = getLogger(Clock.class);
+    private static final Logger LOG = getLogger(Clock.class);
     private Journal journal;
     private HeartbeatMonitor monitor;
 
@@ -29,7 +29,7 @@ public class Clock implements Runnable {
     }
 
     public void tick() {
-        logger.info("Ticking the clock");
+        LOG.info("Ticking the clock");
         this.monitor.pulse();
         Heartbeat hb = this.monitor.heartbeat();
         this.journal.add(hb);
@@ -41,7 +41,7 @@ public class Clock implements Runnable {
         try {
             this.tick();
         } catch (Exception t) {
-            logger.error("Error ticking the clock", t);
+            LOG.error("Error ticking the clock", t);
         }
     }
 }

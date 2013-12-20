@@ -23,7 +23,7 @@ import bz.infectd.communication.gossip.protocol.Messages.Gossip;
  */
 public class GossipServer extends SimpleChannelInboundHandler<DatagramPacket> {
 
-    private static final Logger logger = getLogger(GossipServer.class);
+    private static final Logger LOG = getLogger(GossipServer.class);
     private final int port;
     private GossipHandler gossipHandler;
 
@@ -44,7 +44,7 @@ public class GossipServer extends SimpleChannelInboundHandler<DatagramPacket> {
     public void listen() throws InterruptedException {
         Bootstrap bootstrap = new Bootstrap();
         bootstrap.group(ioLoop()).channel(NioDatagramChannel.class).handler(this);
-        logger.info("UDP server listen to port {}", this.port);
+        LOG.info("UDP server listen to port {}", this.port);
         bootstrap.bind(this.port).sync().channel().closeFuture();
     }
 
@@ -65,7 +65,7 @@ public class GossipServer extends SimpleChannelInboundHandler<DatagramPacket> {
      */
     protected void messageReceived(ChannelHandlerContext ctx, DatagramPacket packet)
             throws Exception {
-        logger.debug("Message received: {}", packet);
+        LOG.debug("Message received: {}", packet);
         Gossip message = datagramToGossip(packet);
         this.gossipHandler.add(message);
     }
@@ -77,7 +77,7 @@ public class GossipServer extends SimpleChannelInboundHandler<DatagramPacket> {
         new GossipServer(7777, new GossipHandler() {
             @Override
             public void add(Gossip message) {
-                logger.info("Message received: {}", message);
+                LOG.info("Message received: {}", message);
             }
         }).listen();
         ioLoop().awaitTermination(5, TimeUnit.MINUTES);
