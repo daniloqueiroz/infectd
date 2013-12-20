@@ -8,10 +8,13 @@ ADD build/distributions/infectd-1.0.tar /opt
 # install java
 RUN apt-get update
 RUN apt-get install -y openjdk-7-jre-headless
+RUN apt-get clean
+RUN apt-get autoclean
+RUN apt-get --purge autoremove
 
 # Preparing to running
 EXPOSE 8212
-WORKDIR /opt/infectd-1.0/bin
+WORKDIR /tmp
 USER daemon
 #ENTRYPOINT ["/opt/infectd-1.0/bin/infectd"]
-CMD ["/opt/infectd-1.0/bin/infectd"]
+CMD ["/opt/infectd-1.0/bin/infectd", "--server"]
