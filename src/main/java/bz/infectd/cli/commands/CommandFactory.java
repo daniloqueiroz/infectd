@@ -14,7 +14,8 @@ public class CommandFactory {
      * Maps a command with the enum name to a {@link InfectdCommand} class.
      */
     public enum CommandMapping {
-        PING(PingCommand.class);
+        PING(PingCommand.class),
+        MEMBERS(MembersCommand.class);
 
         private Class<? extends InfectdCommand> commandClass;
 
