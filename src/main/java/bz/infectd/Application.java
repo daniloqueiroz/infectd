@@ -133,11 +133,9 @@ public class Application {
 
         }
         if (resp.getExitCode() == 0) {
-            System.out.printf("CLI> %s %s\nServer> %s\n", command, buf.toString(),
-                    resp.getMessage());
+            System.out.printf("Server>\n%s\n", resp.getMessage());
         } else {
-            System.err.printf("CLI> %s %s\nServer> Error: %s\n", command, buf.toString(),
-                    resp.getMessage());
+            System.err.printf("Server>\nError: %s\n", resp.getMessage());
         }
         System.exit(resp.getExitCode());
     }
