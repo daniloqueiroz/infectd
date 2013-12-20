@@ -30,7 +30,7 @@ import bz.infectd.communication.cli.protocol.Messages.Response;
  */
 public class CLIClient {
 
-    private static final Logger logger = getLogger(CLIClient.class);
+    private static final Logger LOG = getLogger(CLIClient.class);
     private final String host;
     private final int port;
 
@@ -83,6 +83,7 @@ public class CLIClient {
 
         public Response sendCommand(Command command) throws InterruptedException {
             this.lock = new CountDownLatch(1);
+            LOG.info("Sending command: '{}'", command);
             this.channel.writeAndFlush(command);
             this.lock.await();
             return this.response;
@@ -95,12 +96,13 @@ public class CLIClient {
 
         @Override
         public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-            logger.error("Unexpected exception from downstream.", cause);
+            LOG.error("Unexpected exception from downstream.", cause);
             ctx.close();
         }
 
         @Override
         protected void channelRead0(ChannelHandlerContext ctx, Response msg) throws Exception {
+            LOG.info("Response received: '{}'", msg);
             this.response = msg;
             this.lock.countDown();
         }
