@@ -21,7 +21,7 @@ public class MembersCommand implements InfectdCommand {
 
     @Override
     public String execute(String... params) throws InfectdCommandException {
-        String response = "No other members online";
+        String response = "Waiting for other peers...";
         Collection<Heartbeat> hearbeats = this.board.heartbeats();
         if (!hearbeats.isEmpty()) {
             StringBuilder buf = new StringBuilder();
