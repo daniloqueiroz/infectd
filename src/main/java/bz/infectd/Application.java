@@ -3,9 +3,14 @@ package bz.infectd;
 import static java.lang.String.valueOf;
 import static org.slf4j.LoggerFactory.getLogger;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.crypto.SecretKey;
 
 import org.kohsuke.args4j.Argument;
 import org.kohsuke.args4j.CmdLineParser;
@@ -15,6 +20,7 @@ import org.slf4j.Logger;
 import bz.infectd.communication.cli.protocol.Messages.Command;
 import bz.infectd.communication.cli.protocol.Messages.Response;
 import bz.infectd.communication.cli.tcp.CLIClient;
+import bz.infectd.crypto.SecretKeyUtils;
 
 /**
  * Main entry point for Infectd App.
@@ -25,6 +31,10 @@ public class Application {
 
     private static final String VERSION = "1.0.0";
     private static final String URL = "http://github.com/daniloqueiroz/infectd";
+
+    private enum ERROR_CODES {
+        WRONG_USAGE, SERVER_ERROR, CLIENT_ERROR, GENERATE_KEY_ERROR;
+    }
 
     /**
      * Main method.
@@ -39,6 +49,8 @@ public class Application {
 
         if (app.help) {
             parser.printUsage(System.out);
+        } else if (app.generateKey) {
+            app.generateKey();
         } else {
             app.start();
         }
@@ -72,6 +84,15 @@ public class Application {
 
     private Logger logger;
 
+    @Option(name = "--generate-key", usage = "Generate a secret key.")
+    private boolean generateKey = false;
+
+    @Option(
+        name = "--to-file",
+        usage = "The output file for the key.",
+        depends = { "--generate-key" })
+    private String outputFile;
+
     /**
      * Entry point to start/run the application
      */
@@ -84,7 +105,7 @@ public class Application {
             this.runClient();
         } else {
             System.err.printf("Wrong usage, try using --help to see available options/commands;\n");
-            System.exit(-1);
+            System.exit(-ERROR_CODES.WRONG_USAGE.ordinal());
         }
     }
 
@@ -111,7 +132,7 @@ public class Application {
         } catch (InterruptedException e) {
             this.logger.error("Error running server", e);
             System.err.println("Error running server - check log file for more details");
-            System.exit(-1);
+            System.exit(-ERROR_CODES.SERVER_ERROR.ordinal());
         }
     }
 
@@ -133,7 +154,7 @@ public class Application {
         } catch (SocketException | InterruptedException e) {
             this.logger.error("Error running clien", e);
             System.err.println("Error running client - check log file for more details");
-            System.exit(-1);
+            System.exit(-ERROR_CODES.CLIENT_ERROR.ordinal());
 
         }
         String pattern = "Server>\n%s\n";
@@ -146,5 +167,23 @@ public class Application {
             System.err.printf(pattern, String.format("Error: %s", resp.getMessage()));
         }
         System.exit(resp.getExitCode());
+    }
+
+    /**
+     * Generate a secret key to the outputFile.
+     */
+    @SuppressWarnings("resource")
+    private void generateKey() {
+        File outFile = new File(this.outputFile);
+        try {
+            outFile.createNewFile();
+            SecretKey key = SecretKeyUtils.generate();
+            SecretKeyUtils.writeKey(key, new FileOutputStream(outFile).getChannel());
+        } catch (IOException e) {
+            this.logger.error("Error writing key file", e);
+            System.err.printf("Unable to write secret-key file \n\tError:%s "
+                    + "\nCheck log file for more details\n", e.getMessage());
+            System.exit(-ERROR_CODES.GENERATE_KEY_ERROR.ordinal());
+        }
     }
 }
